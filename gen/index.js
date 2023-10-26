@@ -11,6 +11,8 @@ const socialsGenerator = require("./subgens/socials");
 const archiveGenerator = require("./subgens/archive");
 const newsletterGenerator = require("./subgens/newsletter");
 
+const compileSass = require("./utils/compileScss");
+
 const prismicName = process.env.PRISMIC_NAME ?? "";
 const secret = process.env.PRISMIC_ACCESS_TOKEN ?? "";
 
@@ -108,20 +110,28 @@ const compilePages = async () => {
 };
 
 const compileSite = async () => {
-  console.log("Cleaning Build...");
-  await fileGen.cleanBuild();
-  console.log("Done");
-  console.log("Compiling Index...");
-  await compileIndex();
-  console.log("Done");
+  try {
+    console.log("Cleaning Build...");
+    await fileGen.cleanBuild();
+    console.log("Done");
+    console.log("Compiling Index...");
+    await compileIndex();
+    console.log("Done");
 
-  console.log("Compiling Pages...");
-  await compilePages();
-  console.log("Done");
+    console.log("Compiling Pages...");
+    await compilePages();
+    console.log("Done");
 
-  console.log("Copying over /static/");
-  fileGen.copyOverStatic();
-  console.log("Done");
+    console.log("Compiling sass...");
+    await compileSass();
+    console.log("Done");
+
+    console.log("Copying over /static/");
+    fileGen.copyOverStatic();
+    console.log("Done");
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 compileSite();

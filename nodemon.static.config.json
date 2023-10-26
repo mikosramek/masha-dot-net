@@ -1,0 +1,5 @@
+{
+  "watch": ["gen/static"],
+  "exec": "npm run copy-static",
+  "ext": "css, js, gltf"
+}

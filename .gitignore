@@ -4,3 +4,6 @@ node_modules/
 
 build/**
 !/build/.gitkeep
+
+
+**/.DS_Store

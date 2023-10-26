@@ -5,44 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>%site-title%</title>
 
+    <link rel="stylesheet" href="styles.css" />
+
     <!-- meta-tags -->
     %meta-tags%
     <!-- end of meta-tags -->
   </head>
   <body>
     <header class="Header">
-      <!-- signup -->
-      %signup%
-      <!-- end of signup -->
+      <div class="Global__wrapper">
+        <!-- signup -->
+        %signup%
+        <!-- end of signup -->
 
-      <!-- title -->
-      <h1 class="Title">%title%</h1>
-      <!-- end of title -->
+        <!-- title -->
+        <h1 class="Header__title">%title%</h1>
+        <!-- end of title -->
+      </div>
     </header>
-    <body class="Body">
-      <section class="Section Newsletter">
+    <main class="Main">
+      <div class="Global__wrapper">
         <!-- newsletter -->
         %newsletter%
         <!-- end of newsletter -->
-      </section>
+      </div>
 
       <section class="Section Socials">
-        <!-- socials -->
-        %socials%
-        <!-- end of socials -->
+        <div class="Global__wrapper">
+          <!-- socials -->
+          %socials%
+          <!-- end of socials -->
+        </div>
       </section>
 
       <section class="Section Unsubscribe">
-        <!-- copy / links to unsubscribe -->
-        %unsubscribe%
-        <!-- end of unsubscribe -->
+        <div class="Global__wrapper">
+          <!-- copy / links to unsubscribe -->
+          %unsubscribe%
+          <!-- end of unsubscribe -->
+        </div>
       </section>
 
       <section class="Section Archive">
-        <!-- list of old newsletters -->
-        %archive%
-        <!-- end of archive -->
+        <div class="Global__wrapper">
+          <!-- list of old newsletters -->
+          %archive%
+          <!-- end of archive -->
+        </div>
       </section>
-    </body>
+    </main>
   </body>
 </html>
