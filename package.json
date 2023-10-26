@@ -5,13 +5,14 @@
   "main": "/gen/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./gen/index.js"
+    "start": "node ./gen/index.js",
+    "schema": "node ./gen/generateSchemaTypes.js"
   },
   "keywords": [],
   "author": "mikosramek",
   "license": "ISC",
   "dependencies": {
-    "@mikosramek/mnpg": "^0.0.1",
+    "@mikosramek/mnpg": "^1.0.6",
     "dotenv": "^16.3.1",
     "fs-extra": "^11.1.1",
     "lodash.get": "^4.4.2"

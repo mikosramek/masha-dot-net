@@ -6,11 +6,13 @@ class Gen {
   slicesPath = "";
   buildPath = "";
   staticPath = "";
-  constructor({ pagesPath, slicesPath, buildPath, staticPath }) {
+  schemaPath = "";
+  constructor({ pagesPath, slicesPath, buildPath, staticPath, schemaPath }) {
     this.pagesPath = pagesPath;
     this.slicesPath = slicesPath;
     this.buildPath = buildPath;
     this.staticPath = staticPath;
+    this.schemaPath = schemaPath;
   }
 
   loadPage(pageName) {
@@ -31,9 +33,9 @@ class Gen {
       });
     });
   }
-  writeFile(fileName, data) {
+  writeFile(fileName, data, fileType = "html") {
     return new Promise((res, rej) => {
-      const filePath = path.resolve(this.buildPath, `${fileName}.html`);
+      const filePath = path.resolve(this.buildPath, `${fileName}.${fileType}`);
       fs.writeFile(filePath, data, (err) => {
         if (err) return rej(err);
         res();
@@ -66,11 +68,20 @@ class Gen {
 
     return html;
   }
+  loadSchema() {
+    return new Promise((res, rej) => {
+      fs.readFile(this.schemaPath, "utf-8", (err, data) => {
+        if (err) return rej(err);
+        return res(JSON.parse(data));
+      });
+    });
+  }
 }
 
 module.exports = new Gen({
   pagesPath: path.resolve(__dirname, "..", "pages"),
   slicesPath: path.resolve(__dirname, "..", "slices"),
   staticPath: path.resolve(__dirname, "..", "static"),
-  buildPath: path.resolve(__dirname, "..", "../build"),
+  schemaPath: path.resolve(__dirname, "..", "schema", "schema.json"),
+  buildPath: path.resolve(__dirname, "..", "..", "build"),
 });
