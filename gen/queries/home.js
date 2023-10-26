@@ -1,29 +1,24 @@
 module.exports = `
-allHomes {
-  edges {
-    node {
-      description
-      body {
-        ... on HomeBodyZone {
-          type
-          primary {
-            name
-          }
-          fields {
-            page_link {
-              ... on Page {
-                heading
-                _meta {
-                  id
-                  uid
-                }
-                header_image
-              }
+  allHomes {
+    edges {
+      node {
+        title
+        meta_share_image
+        socials {
+          icon
+          link {
+            ... on _ExternalLink {
+              url
             }
+          }
+        }
+        unsubscribe_text
+        unsubscribe_link {
+          ... on _ExternalLink {
+            url
           }
         }
       }
     }
-  }
   }
 `;

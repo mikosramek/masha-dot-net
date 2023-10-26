@@ -1,4 +1,4 @@
-// npm i @mikosramek/mnpg dotenv lodash.get
+// npm i @mikosramek/mnpg dotenv lodash.get fs-extra
 
 const path = require("path");
 require("dotenv").config();
@@ -8,7 +8,10 @@ const MNPG = require("@mikosramek/mnpg");
 
 const IS_DEV = process.env.IS_DEV;
 
-const { basePages } = require("./queries");
+const { basePages, entries, firstEntries } = require("./queries");
+
+const socialsGenerator = require("./subgens/socials");
+const archiveGenerator = require("./subgens/archive");
 
 const prismicName = process.env.PRISMIC_NAME ?? "";
 const secret = process.env.PRISMIC_ACCESS_TOKEN ?? "";
@@ -16,14 +19,17 @@ const secret = process.env.PRISMIC_ACCESS_TOKEN ?? "";
 const Gen = require("./utils/gen-utils");
 
 const fileGen = new Gen({
-  pages: path.resolve(__dirname, "pages"),
-  slices: path.resolve(__dirname, "slices"),
-  static: path.resolve(__dirname, "static"),
-  build: path.resolve(__dirname, "../build"),
+  pagesPath: path.resolve(__dirname, "pages"),
+  slicesPath: path.resolve(__dirname, "slices"),
+  staticPath: path.resolve(__dirname, "static"),
+  buildPath: path.resolve(__dirname, "../build"),
 });
+
+const formattedNewsletters = {};
 
 const compileIndex = async () => {
   const indexTemplate = await fileGen.loadPage("index");
+  const metaTemplate = await fileGen.loadSlice("meta");
 
   // const listContainerTemplate = (
   //   await loadSlice("index-list-container")
@@ -35,16 +41,87 @@ const compileIndex = async () => {
 
   const data = await client.getBasePages(basePages);
   const homePage = _get(data, "allHomes.edges[0].node", {});
-  const homeBody = _get(homePage, "body", []);
+  // const homeBody = _get(homePage, "body", []);
 
-  // await writeFile("index", index);
+  const newsletters = await client.getEntries(
+    firstEntries,
+    entries,
+    "allNewsletters"
+  );
+
+  newsletters.forEach((nws) => {
+    const { _meta, title = "", body } = _get(nws, "node", {});
+
+    const uid = _get(_meta, "uid", "");
+    const firstPubDate = _get(_meta, "firstPublicationDate", "");
+
+    if (!formattedNewsletters[uid]) {
+      formattedNewsletters[uid] = {
+        title,
+        slug: uid,
+        firstPubDate,
+        body,
+      };
+    }
+  });
+
+  // TODO: make sure this is sorting correctly
+  // TODO: remove the latest newsletter (as it's being displayed)
+  const archives = Object.values(formattedNewsletters)
+    .map((nws) => {
+      return {
+        title: nws.title,
+        slug: nws.slug,
+        firstPubDate: nws.firstPubDate,
+      };
+    })
+    .sort((a, b) => {
+      const aDate = new Date(a.firstPubDate);
+      const bDate = new Date(b.firstPubDate);
+
+      if (aDate > bDate) return 1;
+      if (aDate < bDate) return -1;
+      else return 0;
+    });
+
+  const socials = await socialsGenerator(
+    fileGen,
+    _get(homePage, "socials", [])
+  );
+
+  const archive = await archiveGenerator(fileGen, archives);
+
+  const meta = fileGen.replaceAllKeys(
+    {
+      title: homePage.title,
+      "share-image-url": _get(homePage, "meta_share_image.url", ""),
+    },
+    metaTemplate
+  );
+
+  const index = fileGen.replaceAllKeys(
+    {
+      title: homePage.title,
+      "site-title": homePage.title,
+      "meta-tags": meta,
+      socials,
+      archive,
+    },
+    indexTemplate
+  );
+
+  await fileGen.writeFile("index", index);
 };
 
-const compilePages = async () => {};
+const compilePages = async () => {
+  // get list of all newsletters
+  // create subpages
+  // /slug/index.html
+};
 
 const compileSite = async () => {
   console.log("Cleaning Build...");
-  await cleanBuild();
+  await fileGen.cleanBuild();
   console.log("Done");
   console.log("Compiling Index...");
   await compileIndex();
@@ -55,7 +132,7 @@ const compileSite = async () => {
   console.log("Done");
 
   console.log("Copying over /static/");
-  copyOverStatic();
+  fileGen.copyOverStatic();
   console.log("Done");
 };
 

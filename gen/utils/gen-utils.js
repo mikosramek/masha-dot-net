@@ -6,11 +6,11 @@ class Gen {
   slicesPath = "";
   buildPath = "";
   staticPath = "";
-  Gen({ pages, slices, build, static }) {
-    this.pagesPath = pages;
-    this.slicesPath = slices;
-    this.buildPath = build;
-    this.static = static;
+  constructor({ pagesPath, slicesPath, buildPath, staticPath }) {
+    this.pagesPath = pagesPath;
+    this.slicesPath = slicesPath;
+    this.buildPath = buildPath;
+    this.staticPath = staticPath;
   }
 
   loadPage(pageName) {
@@ -18,7 +18,7 @@ class Gen {
       const filePath = path.resolve(this.pagesPath, `${pageName}.html`);
       fs.readFile(filePath, "utf-8", (err, data) => {
         if (err) return rej(err);
-        return res(data).trim();
+        return res(data.trim());
       });
     });
   }
@@ -27,7 +27,7 @@ class Gen {
       const filePath = path.resolve(this.slicesPath, `${sliceName}.html`);
       fs.readFile(filePath, "utf-8", (err, data) => {
         if (err) return rej(err);
-        return res(data).trim();
+        return res(data.trim());
       });
     });
   }
@@ -44,7 +44,11 @@ class Gen {
     return new Promise((res, rej) => {
       fs.emptyDir(this.buildPath, (err) => {
         if (err) return rej(err);
-        res();
+        // replace .gitkeep file
+        fs.writeFile(path.resolve(this.buildPath, ".gitkeep"), "", (err) => {
+          if (err) return rej(err);
+          res();
+        });
       });
     });
   }
@@ -53,6 +57,14 @@ class Gen {
       if (/(\.scss|\.css\.map)$/gi.test(src)) return false;
       return true;
     });
+  }
+  replaceAllKeys(replacements, template) {
+    let html = "" + template;
+    Object.entries(replacements).forEach(([key, value]) => {
+      html = html.replaceAll(`%${key}%`, value);
+    });
+
+    return html;
   }
 }
 

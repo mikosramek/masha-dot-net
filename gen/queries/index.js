@@ -9,7 +9,7 @@ const basePages = `
 
 const firstEntries = `
 {
-    allPages (sortBy:meta_firstPublicationDate_ASC) {
+    allNewsletters (sortBy:meta_firstPublicationDate_ASC) {
         totalCount
         pageInfo {
             hasNextPage
@@ -19,9 +19,9 @@ const firstEntries = `
 }
 `;
 
-const entries = (lastId, pageCount = 20) => `
+const entries = (lastId) => `
 {
-    allPages (after: "${lastId}", first: ${pageCount}, sortBy:meta_firstPublicationDate_ASC) {
+    allNewsletters (after: "${lastId}", first: 20, sortBy:meta_firstPublicationDate_ASC) {
         totalCount
         pageInfo {
             hasNextPage

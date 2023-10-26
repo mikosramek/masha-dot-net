@@ -9,6 +9,24 @@ edges {
           lastPublicationDate
           firstPublicationDate
       }
+      title
+      body {
+        ... on NewsletterBodyImage {
+          fields {
+            image
+          }
+        }
+        ... on NewsletterBodyText {
+          fields {
+            paragraph
+          }
+        }
+        ... on NewsletterBodyHeading {
+          primary {
+            heading
+          }
+        }
+      }
   }
 }
 `;
