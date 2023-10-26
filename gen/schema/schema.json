@@ -54,15 +54,7 @@
         "name": "NewsletterBody",
         "possibleTypes": [
           {
-            "name": "NewsletterBodyImage",
-            "__typename": "__Type"
-          },
-          {
-            "name": "NewsletterBodyText",
-            "__typename": "__Type"
-          },
-          {
-            "name": "NewsletterBodyHeading",
+            "name": "NewsletterBodyEntry",
             "__typename": "__Type"
           }
         ],
@@ -70,37 +62,13 @@
       },
       {
         "kind": "OBJECT",
-        "name": "NewsletterBodyHeading",
+        "name": "NewsletterBodyEntry",
         "possibleTypes": null,
         "__typename": "__Type"
       },
       {
         "kind": "OBJECT",
-        "name": "NewsletterBodyHeadingPrimary",
-        "possibleTypes": null,
-        "__typename": "__Type"
-      },
-      {
-        "kind": "OBJECT",
-        "name": "NewsletterBodyImage",
-        "possibleTypes": null,
-        "__typename": "__Type"
-      },
-      {
-        "kind": "OBJECT",
-        "name": "NewsletterBodyImageFields",
-        "possibleTypes": null,
-        "__typename": "__Type"
-      },
-      {
-        "kind": "OBJECT",
-        "name": "NewsletterBodyText",
-        "possibleTypes": null,
-        "__typename": "__Type"
-      },
-      {
-        "kind": "OBJECT",
-        "name": "NewsletterBodyTextFields",
+        "name": "NewsletterBodyEntryPrimary",
         "possibleTypes": null,
         "__typename": "__Type"
       },

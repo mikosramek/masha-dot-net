@@ -2,67 +2,44 @@
 const _get = require("lodash.get");
 const fileGen = require("../utils/gen-utils");
 
-let paragpraphTemplate, headingTemplate, imageTemplate;
+let entryTemplate;
 
 /*
 {
-  "fields": [
-    {
-      "paragraph": "Here is some text about mawa, this won't respect new lines really?\nI mean it might."
-    },
-    {
-      "paragraph": "But here is a larger space break :)"
-    }
-  ]
-}
-*/
-const genParagraphSlice = (slice) => {
-  return "paragpraph";
-};
-
-/*
-{
+  "__typename": "NewsletterBodyEntry",
   "primary": {
-    "heading": "Haha she funny"
+    "heading": "Spooky :(",
+    "label": "Is that real?!",
+    "image": {
+      "dimensions": {
+        "width": 950,
+        "height": 950
+      },
+      "alt": "Masha stands in the hallway menacingly",
+      "copyright": null,
+      "url": "https://images.prismic.io/masha-dot-net/9a7b74ac-ce63-4b42-9105-2dea08840307_mawa.jpg?auto=compress,format&rect=699,930,653,653&w=950&h=950"
+    }
   }
 }
 */
-const genHeadingSlice = (slice) => {
-  const heading = _get(slice, "primary.heading", "");
-  return fileGen.replaceAllKeys({ heading }, headingTemplate);
-};
-
-/*
-{
-  "fields": [
+const genEntry = (slice) => {
+  return fileGen.replaceAllKeys(
     {
-      "image": {
-        "dimensions": {
-          "width": 950,
-          "height": 950
-        },
-        "alt": "Masha stares down a stuffed duck from Spirited Away",
-        "copyright": null,
-        "url": "https://images.prismic.io/masha-dot-net/90392e75-fd0a-4564-8c25-567bd84e732c_masha-and-duck.jpg?auto=compress,format&rect=0,526,996,996&w=950&h=950"
-      }
-    }
-  ]
-}
-*/
-const genImageSlice = (slice) => {
-  return "image";
+      heading: _get(slice, "primary.heading", ""),
+      label: _get(slice, "primary.label", ""),
+      "img-url": _get(slice, "primary.image.url", ""),
+      "img-alt": _get(slice, "primary.image.alt", ""),
+    },
+    entryTemplate
+  );
 };
 
 const genSlices = (slices) => {
   const html = slices.map((slice) => {
     const type = _get(slice, "__typename", "");
     switch (type) {
-      case "NewsletterBodyImage":
-        return genImageSlice(slice);
-      case "NewsletterBodyHeading":
-        return genHeadingSlice(slice);
-      case "NewsletterBodyText":
-        return genParagraphSlice(slice);
+      case "NewsletterBodyEntry":
+        return genEntry(slice);
       default:
         console.error(`slice type of "${type}" is not handled`);
     }
@@ -74,9 +51,7 @@ const genSlices = (slices) => {
 const genNewsletter = async (newsletter) => {
   const html = await fileGen.loadSlice("newsletter");
 
-  headingTemplate = await fileGen.loadSlice("newsletter-heading");
-  paragpraphTemplate = await fileGen.loadSlice("newsletter-paragraph");
-  imageTemplate = await fileGen.loadSlice("newsletter-image");
+  entryTemplate = await fileGen.loadSlice("newsletter-entry");
 
   /*
     'masha-at-the-zoo': {
@@ -91,7 +66,7 @@ const genNewsletter = async (newsletter) => {
 
   const replacements = {
     title: _get(newsletter, "title", ""),
-    slices: genSlices(body),
+    entries: genSlices(body),
   };
 
   return fileGen.replaceAllKeys(replacements, html);

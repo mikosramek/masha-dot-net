@@ -162,3 +162,6 @@ img {
     border-radius: 50%;
     width: 100%;
     height: auto; }
+
+.Newsletter__entry-image {
+  width: 250px; }

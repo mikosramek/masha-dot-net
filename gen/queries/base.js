@@ -12,19 +12,11 @@ edges {
       title
       body {
         __typename
-        ... on NewsletterBodyImage {
-          fields {
-            image
-          }
-        }
-        ... on NewsletterBodyText {
-          fields {
-            paragraph
-          }
-        }
-        ... on NewsletterBodyHeading {
+        ... on NewsletterBodyEntry {
           primary {
             heading
+            label
+            image
           }
         }
       }
