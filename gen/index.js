@@ -84,6 +84,8 @@ const compileIndex = async () => {
     {
       title: homePage.title,
       "share-image-url": _get(homePage, "meta_share_image.url", ""),
+      "short-description": _get(homePage, "meta_short_description", ""),
+      "site-url": _get(homePage, "meta_site_url", ""),
     },
     metaTemplate
   );
@@ -107,6 +109,8 @@ const compilePages = async () => {
   // get list of all newsletters
   // create subpages
   // /slug/index.html
+  // use first image as meta image
+  // use first heading as short-description
 };
 
 const compileSite = async () => {

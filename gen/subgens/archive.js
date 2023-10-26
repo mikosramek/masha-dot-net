@@ -9,7 +9,7 @@ const genArchive = async (archiveData) => {
 
   archiveData.forEach((archive) => {
     const replacements = {
-      slug: _get(archive, "slug", ""),
+      slug: `./${_get(archive, "slug", "")}`,
       label: _get(archive, "title", ""),
     };
     archiveLinks.push(fileGen.replaceAllKeys(replacements, archiveTemplate));
