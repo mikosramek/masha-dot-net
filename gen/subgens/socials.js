@@ -1,6 +1,7 @@
 const _get = require("lodash.get");
+const fileGen = require("../utils/gen-utils");
 
-const genSocials = async (fileGen, socialData) => {
+const genSocials = async (socialData) => {
   const wrapperTemplate = await fileGen.loadSlice("socials-wrapper");
   const socialTemplate = await fileGen.loadSlice("socials");
 

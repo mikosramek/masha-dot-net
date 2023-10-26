@@ -1,6 +1,7 @@
 const _get = require("lodash.get");
+const fileGen = require("../utils/gen-utils");
 
-const genArchive = async (fileGen, archiveData) => {
+const genArchive = async (archiveData) => {
   const wrapperTemplate = await fileGen.loadSlice("archive-wrapper");
   const archiveTemplate = await fileGen.loadSlice("archive");
 

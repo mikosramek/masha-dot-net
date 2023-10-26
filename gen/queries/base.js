@@ -11,6 +11,7 @@ edges {
       }
       title
       body {
+        __typename
         ... on NewsletterBodyImage {
           fields {
             image

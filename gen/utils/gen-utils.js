@@ -68,4 +68,9 @@ class Gen {
   }
 }
 
-module.exports = Gen;
+module.exports = new Gen({
+  pagesPath: path.resolve(__dirname, "..", "pages"),
+  slicesPath: path.resolve(__dirname, "..", "slices"),
+  staticPath: path.resolve(__dirname, "..", "static"),
+  buildPath: path.resolve(__dirname, "..", "../build"),
+});
