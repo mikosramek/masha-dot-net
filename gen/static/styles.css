@@ -151,7 +151,10 @@ img {
     padding: 25px 0;
     justify-content: space-between; }
   .Socials__item {
-    width: 25%; }
+    width: calc((100% - 6px) / 4);
+    margin-right: 2px; }
+    .Socials__item:last-of-type {
+      margin-right: 0; }
   .Socials__link {
     display: block;
     width: 100%; }
