@@ -74,7 +74,8 @@ const compileIndex = async () => {
       else return 0;
     });
 
-  const latestNewsletter = await newsletterGenerator(
+  const latestNewsletterData = formattedNewsletters[archives[0].slug];
+  const latestNewsletterHTML = await newsletterGenerator(
     formattedNewsletters[archives[0].slug]
   );
 
@@ -91,14 +92,27 @@ const compileIndex = async () => {
     metaTemplate
   );
 
+  // Get and format the issue based on the last newsletter
+  const issueDate = new Date(_get(latestNewsletterData, "firstPubDate", ""));
+  const dateString = `${issueDate.getFullYear()}.${
+    issueDate.getMonth() + 1
+  }.${issueDate.getDate()}`;
+
   const index = fileGen.replaceAllKeys(
     {
       title: homePage.title,
+      header_image: _get(
+        homePage,
+        "header_image.url",
+        "./assets/title_graphic.png"
+      ),
       "site-title": homePage.title,
       "meta-tags": meta,
       socials,
       archive,
-      newsletter: latestNewsletter,
+      "publish-date": dateString,
+      "issue-number": `#${newsletters.length}`,
+      newsletter: latestNewsletterHTML,
     },
     indexTemplate
   );

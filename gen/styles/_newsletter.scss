@@ -5,6 +5,7 @@
   border: 1px solid #111;
 
   &__heading {
+    @include heading;
   }
   &__entry {
     padding-top: 16px;

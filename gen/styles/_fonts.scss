@@ -1,3 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Enriqueta:wght@400;700&display=swap");
 
-$enriqueta: "Enriqueta", serif;
+$enriqueta: "Enriqueta", sans-serif;
+
+@font-face {
+  font-family: "EDCerfoglioRegular";
+  src: url("./fonts/EDCerfoglio/ED Cerfoglio-Regular.otf") format("opentype"),
+    url("./fonts/EDCerfoglio/ED Cerfoglio-Regular.woff") format("woff"),
+    url("./fonts/EDCerfoglio/ED Cerfoglio-Regular.ttf") format("truetype");
+}
+
+$EDCerfoglioRegular: "EDCerfoglioRegular", serif;
