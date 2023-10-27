@@ -1,0 +1,32 @@
+@import "./_fonts.scss";
+
+@mixin heading {
+  font-size: 3.2rem;
+}
+
+@mixin subheading {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: $enriqueta;
+}
+
+@mixin label {
+  font-size: 1.6rem;
+  font-family: $enriqueta;
+}
+
+@mixin visuallyhidden {
+  &:not(:focus):not(:active) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    white-space: nowrap;
+    -webkit-clip-path: inset(100%);
+    clip-path: inset(100%);
+    clip: rect(0 0 0);
+    overflow: hidden;
+  }
+}

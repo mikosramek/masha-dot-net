@@ -58,8 +58,9 @@ const compileIndex = async () => {
   // TODO: remove the latest newsletter (as it's being displayed)
   const archives = Object.values(formattedNewsletters)
     .map((nws) => {
+      const firstArticleTitle = _get(nws, "body[0].primary.heading", nws.title);
       return {
-        title: nws.title,
+        title: firstArticleTitle,
         slug: nws.slug,
         firstPubDate: nws.firstPubDate,
       };

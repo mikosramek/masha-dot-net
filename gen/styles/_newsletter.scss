@@ -1,13 +1,36 @@
+@import "./_mixins.scss";
+
 .Newsletter {
+  padding: 26px 20px;
+  border: 1px solid #111;
+
   &__heading {
   }
   &__entry {
+    padding-top: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #111;
+    margin-top: 3px;
+    border-top: 0.5px solid #111;
+    &:last-of-type {
+      padding-bottom: 7px;
+      border-bottom: none;
+    }
+    &:first-of-type {
+      border-top: none;
+      margin-top: 0;
+    }
   }
   &__entry-title {
+    @include subheading;
+    margin-bottom: 8px;
   }
   &__entry-image {
-    width: 250px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px;
   }
   &__entry-label {
+    @include label;
   }
 }

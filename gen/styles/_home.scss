@@ -1,7 +1,14 @@
+@import "./mixins";
+
 .Header {
+  padding-top: 16px;
   &__title {
     text-align: center;
     font-size: 24px;
+    @include visuallyhidden;
+  }
+  &__graphic {
+    width: 100%;
   }
 }
 

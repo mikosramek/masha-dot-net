@@ -9,6 +9,7 @@ const genArchive = async (archiveData) => {
 
   archiveData.forEach((archive) => {
     const replacements = {
+      // TODO: IS_DEV for proper link in dev exp?
       slug: `./${_get(archive, "slug", "")}`,
       label: _get(archive, "title", ""),
     };

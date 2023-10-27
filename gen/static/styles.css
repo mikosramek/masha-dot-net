@@ -2,6 +2,8 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+@import url("https://fonts.googleapis.com/css2?family=Enriqueta:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Enriqueta:wght@400;700&display=swap");
 html,
 body,
 div,
@@ -127,10 +129,11 @@ table {
   border-spacing: 0; }
 
 body {
-  font-family: sans-serif; }
+  font-family: sans-serif;
+  font-size: 62.5%; }
 
 .Global__wrapper {
-  max-width: 1080px;
+  max-width: 600px;
   margin: 0 auto;
   width: 80%; }
 
@@ -138,9 +141,25 @@ img {
   display: block;
   min-height: 100%; }
 
-.Header__title {
-  text-align: center;
-  font-size: 24px; }
+.Header {
+  padding-top: 16px; }
+  .Header__title {
+    text-align: center;
+    font-size: 24px; }
+    .Header__title:not(:focus):not(:active) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      border: 0;
+      padding: 0;
+      white-space: nowrap;
+      -webkit-clip-path: inset(100%);
+      clip-path: inset(100%);
+      clip: rect(0 0 0);
+      overflow: hidden; }
+  .Header__graphic {
+    width: 100%; }
 
 .Section {
   margin: 15px 0; }
@@ -166,5 +185,30 @@ img {
     width: 100%;
     height: auto; }
 
-.Newsletter__entry-image {
-  width: 250px; }
+.Newsletter {
+  padding: 26px 20px;
+  border: 1px solid #111; }
+  .Newsletter__entry {
+    padding-top: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #111;
+    margin-top: 3px;
+    border-top: 0.5px solid #111; }
+    .Newsletter__entry:last-of-type {
+      padding-bottom: 7px;
+      border-bottom: none; }
+    .Newsletter__entry:first-of-type {
+      border-top: none;
+      margin-top: 0; }
+  .Newsletter__entry-title {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: "Enriqueta", serif;
+    margin-bottom: 8px; }
+  .Newsletter__entry-image {
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px; }
+  .Newsletter__entry-label {
+    font-size: 1.6rem;
+    font-family: "Enriqueta", serif; }
