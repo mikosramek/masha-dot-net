@@ -1,6 +1,9 @@
+html {
+  font-size: 62.5%;
+}
+
 body {
   font-family: sans-serif;
-  font-size: 62.5%;
 }
 
 .Global {
@@ -14,4 +17,10 @@ body {
 img {
   display: block;
   min-height: 100%;
+}
+
+a,
+a:visited {
+  text-decoration: none;
+  color: inherit;
 }

@@ -128,9 +128,11 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-body {
-  font-family: sans-serif;
+html {
   font-size: 62.5%; }
+
+body {
+  font-family: sans-serif; }
 
 .Global__wrapper {
   max-width: 600px;
@@ -140,6 +142,11 @@ body {
 img {
   display: block;
   min-height: 100%; }
+
+a,
+a:visited {
+  text-decoration: none;
+  color: inherit; }
 
 @font-face {
   font-family: "EDCerfoglioRegular";
@@ -206,14 +213,12 @@ img {
 
 .Socials {
   background: #000; }
-  .Socials__list {
+  .Socials__table {
     position: relative;
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 32px 68px 90px;
-    justify-content: space-between;
-    overflow: hidden; }
+    border-collapse: collapse;
+    width: 100%;
+    background-size: cover;
+    background-position: 50% 50%; }
   .Socials__background {
     width: 200%;
     height: 200%;
@@ -227,17 +232,23 @@ img {
   .Socials__item {
     position: relative;
     z-index: 2;
-    width: calc((100% - 6px) / 4);
-    margin-right: 2px; }
-    .Socials__item:last-of-type {
-      margin-right: 0; }
+    color: #fff;
+    padding: 32px 40px; }
+    .Socials__item:nth-of-type(2n) {
+      text-align: right; }
+      .Socials__item:nth-of-type(2n) .Socials__image {
+        width: 20px; }
   .Socials__link {
-    display: block;
-    width: 100%; }
+    font-size: 1.6rem;
+    font-family: "Enriqueta", sans-serif; }
   .Socials__image {
-    border-radius: 50%;
-    width: 100%;
-    height: auto; }
+    width: 16px;
+    height: auto;
+    display: inline;
+    margin-right: 8px; }
+  .Socials__label {
+    position: relative;
+    bottom: 4px; }
 
 @font-face {
   font-family: "EDCerfoglioRegular";

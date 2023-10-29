@@ -32,6 +32,8 @@ const compileIndex = async () => {
   const data = await client.getBasePages(basePages);
   const homePage = _get(data, "allHomes.edges[0].node", {});
 
+  const bgTextureURL = _get(homePage, "background_texture.url", "");
+
   const newsletters = await client.getEntries(
     firstEntries,
     entries,
@@ -113,6 +115,7 @@ const compileIndex = async () => {
       "publish-date": dateString,
       "issue-number": `#${newsletters.length}`,
       newsletter: latestNewsletterHTML,
+      bgTextureURL,
     },
     indexTemplate
   );
