@@ -1,0 +1,8 @@
+
+[build]
+	command = "npm start"
+	functions = "netlify/functions"
+	publish = "build"
+
+[functions]
+        node_bundler = "esbuild"
