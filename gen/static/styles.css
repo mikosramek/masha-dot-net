@@ -142,6 +142,10 @@ body {
   margin: 0 auto;
   width: 80%; }
 
+.Global__strong {
+  color: inherit;
+  font-weight: 400; }
+
 img {
   display: block;
   min-height: 100%; }
@@ -156,7 +160,10 @@ a:visited {
   .Header__title {
     text-align: center; }
   .Header__graphic {
-    width: 100%; }
+    width: 100%;
+    font-size: 3.2rem;
+    font-family: "EDCerfoglioRegular", serif;
+    font-weight: 400; }
   .Header__info-table {
     width: 100%;
     position: relative;
@@ -192,7 +199,8 @@ a:visited {
     width: auto; }
 
 .Socials {
-  background: #000; }
+  background: #000;
+  margin-bottom: 0; }
   .Socials__table {
     position: relative;
     border-collapse: collapse;
@@ -218,10 +226,18 @@ a:visited {
     margin-right: 8px; }
   .Socials__label {
     position: relative;
-    bottom: 4px; }
-  .Socials__strong {
-    color: #fff;
-    font-weight: 400; }
+    bottom: 4px;
+    color: #fff; }
+
+.Unsubscribe__data {
+  width: 100%;
+  font-size: 1.6rem;
+  font-family: "Enriqueta", sans-serif;
+  padding-bottom: 16px;
+  text-align: center; }
+
+.Unsubscribe__link {
+  color: #fff; }
 
 .Newsletter {
   padding: 26px 20px;

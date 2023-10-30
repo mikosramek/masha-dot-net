@@ -12,6 +12,10 @@ body {
     margin: 0 auto;
     width: 80%;
   }
+  &__strong {
+    color: inherit;
+    font-weight: 400;
+  }
 }
 
 img {

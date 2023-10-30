@@ -1,12 +1,6 @@
 const fs = require("fs-extra");
 const { JSDOM } = require("jsdom");
 
-// import html
-// import css
-
-// make a map of all elements + classes
-// find classes, add style attributes to the classes
-
 const loadFile = async (filePath) => {
   return new Promise((res, rej) => {
     fs.readFile(filePath, "utf-8", (err, data) => {
@@ -25,7 +19,11 @@ const writeFile = async (filePath, data) => {
   });
 };
 
-const inline = async (htmlFilePath, cssFilePath, outputFilePath) => {
+const generateNewsletter = async (
+  htmlFilePath,
+  cssFilePath,
+  outputFilePath
+) => {
   try {
     const html = await loadFile(htmlFilePath);
     const css = await loadFile(cssFilePath);
@@ -69,12 +67,12 @@ const inline = async (htmlFilePath, cssFilePath, outputFilePath) => {
       }
     });
 
-    const dom = new JSDOM(html);
-    // const wrappers = dom.window.document.querySelectorAll(".Global__wrapper");
-    // wrappers.forEach((node) => {
-    //   console.log(node.textContent);
-    // });
-    // console.log(dom.window.document.querySelectorAll(".Global__wrapper"));
+    const moddedHTML = html
+      .replaceAll(/<!--.+-->/g, "")
+      .replaceAll(/\s{2,}\n/g, "")
+      .replace('<link rel="stylesheet" href="styles.css" />', "");
+
+    const dom = new JSDOM(moddedHTML);
 
     Object.entries(ruleMap).forEach(([cssClass, attributes]) => {
       const domElements = dom.window.document.querySelectorAll(cssClass);
@@ -113,4 +111,4 @@ const inline = async (htmlFilePath, cssFilePath, outputFilePath) => {
   }
 };
 
-module.exports = inline;
+module.exports = generateNewsletter;

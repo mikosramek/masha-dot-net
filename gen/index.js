@@ -7,7 +7,7 @@ const IS_DEV = process.env.IS_DEV;
 
 const { basePages, entries, firstEntries } = require("./queries");
 
-const inlineCSS = require("./utils/inlineCSS");
+const generateNewsletter = require("./utils/generateNewsletter");
 
 const socialsGenerator = require("./subgens/socials");
 const archiveGenerator = require("./subgens/archive");
@@ -22,7 +22,7 @@ const fileGen = require("./utils/gen-utils");
 
 const formattedNewsletters = {};
 
-const compileIndex = async () => {
+const compileIndex = async (mode) => {
   const indexTemplate = await fileGen.loadPage("index");
   const metaTemplate = await fileGen.loadSlice("meta");
 
@@ -79,14 +79,18 @@ const compileIndex = async () => {
       else return 0;
     });
 
+  // GET THE LATEST NEWSLETTER TO SHOW AS CONTENT
   const latestNewsletterData = formattedNewsletters[archives[0].slug];
-  const latestNewsletterHTML = await newsletterGenerator(
+  const newsletter = await newsletterGenerator(
     formattedNewsletters[archives[0].slug]
   );
 
+  // GEN SECTIONS
   const socials = await socialsGenerator(_get(homePage, "socials", []));
   const archive = await archiveGenerator(archives);
+  const unsubscribe = await fileGen.loadSlice("unsubscribe");
 
+  // GEN META
   const meta = fileGen.replaceAllKeys(
     {
       title: homePage.title,
@@ -105,6 +109,26 @@ const compileIndex = async () => {
 
   const index = fileGen.replaceAllKeys(
     {
+      // sections
+      newsletter,
+      socials,
+      fanart: "",
+      // mode specific replacements
+      ...(mode === "web"
+        ? {
+            archive,
+            unsubscribe: "",
+            header: "TODO",
+          }
+        : {}),
+      ...(mode === "newsletter"
+        ? {
+            archive: "",
+            unsubscribe,
+            header: "",
+          }
+        : {}),
+      // small piece replacements
       title: homePage.title,
       header_image: _get(
         homePage,
@@ -113,11 +137,8 @@ const compileIndex = async () => {
       ),
       "site-title": homePage.title,
       "meta-tags": meta,
-      socials,
-      archive,
       "publish-date": dateString,
       "issue-number": `#${latestNewsletterData.issueNumber}`,
-      newsletter: latestNewsletterHTML,
       bgTextureURL,
     },
     indexTemplate
@@ -135,17 +156,24 @@ const compilePages = async () => {
 };
 
 const compileSite = async () => {
+  const [_, __, mode = "web"] = process.argv;
+
+  console.log(`*** Building in ${mode} mode`);
+
   try {
     console.log("Cleaning Build...");
     await fileGen.cleanBuild();
     console.log("Done");
+
     console.log("Compiling Index...");
-    await compileIndex();
+    await compileIndex(mode);
     console.log("Done");
 
-    console.log("Compiling Pages...");
-    await compilePages();
-    console.log("Done");
+    if (mode === "web") {
+      console.log("Compiling Pages...");
+      await compilePages();
+      console.log("Done");
+    }
 
     console.log("Compiling sass...");
     await compileSass();
@@ -155,12 +183,15 @@ const compileSite = async () => {
     fileGen.copyOverStatic();
     console.log("Done");
 
-    // TODO: inline css values :)
-    await inlineCSS(
-      path.resolve(fileGen.buildPath, "index.html"),
-      path.resolve(fileGen.buildPath, "styles.css"),
-      path.resolve(fileGen.buildPath, "newsletter.html")
-    );
+    if (mode === "newsletter") {
+      console.log("Compiling newsletter...");
+      await generateNewsletter(
+        path.resolve(fileGen.buildPath, "index.html"),
+        path.resolve(fileGen.buildPath, "styles.css"),
+        path.resolve(fileGen.buildPath, "newsletter.html")
+      );
+      console.log("Done");
+    }
   } catch (error) {
     console.error(error);
   }

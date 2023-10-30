@@ -1,5 +1,5 @@
 {
   "watch": ["gen/"],
-  "exec": "npm start",
+  "exec": "npm start newsletter",
   "ext": "scss, js, html"
 }

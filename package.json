@@ -6,13 +6,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./gen/index.js",
-    "dev-build": "nodemon --config ./nodemon.gen.config.json",
+    "dev-web": "nodemon --config ./nodemon.web.config.json",
+    "dev-news": "nodemon --config ./nodemon.newsletter.config.json",
     "schema": "node ./gen/generateSchemaTypes.js",
     "copy-static": "node ./gen/utils/copyStaticDev.js",
     "dev-copy": "nodemon --config ./nodemon.static.config.json",
     "watch-sass": "node-sass --watch ./gen/styles -o ./gen/static",
     "live": "live-server ./build",
-    "dev": "concurrently \"npm run live\" \"npm run dev-build\""
+    "dev": "concurrently \"npm run live\" \"npm run dev-web\""
   },
   "keywords": [],
   "author": "mikosramek",

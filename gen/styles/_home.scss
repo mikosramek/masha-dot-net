@@ -7,6 +7,7 @@
   }
   &__graphic {
     width: 100%;
+    @include heading;
   }
   &__info-table {
     width: 100%;
@@ -52,6 +53,7 @@
 
 .Socials {
   background: #000;
+  margin-bottom: 0;
   &__table {
     position: relative;
     border-collapse: collapse;
@@ -83,9 +85,18 @@
   &__label {
     position: relative;
     bottom: 4px;
-  }
-  &__strong {
     color: #fff;
-    font-weight: 400;
+  }
+}
+
+.Unsubscribe {
+  &__data {
+    width: 100%;
+    @include label;
+    padding-bottom: 16px;
+    text-align: center;
+  }
+  &__link {
+    color: #fff;
   }
 }

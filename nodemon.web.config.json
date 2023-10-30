@@ -1,0 +1,5 @@
+{
+  "watch": ["gen/"],
+  "exec": "npm start web",
+  "ext": "scss, js, html"
+}
