@@ -43,93 +43,99 @@ let meta;
 const compileIndex = async (
   mode,
   issueNumber = 0,
-  output = "index",
-  fetch = true
+  output = "",
+  fetch = true,
+  isSubPage = false
 ) => {
-  indexTemplate = await fileGen.loadPage("index");
-  metaTemplate = await fileGen.loadSlice("meta");
+  if (fetch) {
+    indexTemplate = await fileGen.loadPage("index");
+    metaTemplate = await fileGen.loadSlice("meta");
 
-  client = new MNPG(prismicName, secret);
-  schema = await fileGen.loadSchema();
+    client = new MNPG(prismicName, secret);
+    schema = await fileGen.loadSchema();
 
-  client.createClient(schema);
+    client.createClient(schema);
 
-  data = await client.getBasePages(basePages);
-  homePage = _get(data, "allHomes.edges[0].node", {});
+    data = await client.getBasePages(basePages);
+    homePage = _get(data, "allHomes.edges[0].node", {});
 
-  bgTextureURL = _get(homePage, "background_texture.url", "");
+    bgTextureURL = _get(homePage, "background_texture.url", "");
 
-  newsletters = await client.getEntries(
-    firstEntries,
-    entries,
-    "allNewsletters"
-  );
+    newsletters = await client.getEntries(
+      firstEntries,
+      entries,
+      "allNewsletters"
+    );
 
-  newsletters.forEach((nws, index) => {
-    const { _meta, title = "", body } = _get(nws, "node", {});
+    newsletters.forEach((nws, index) => {
+      const { _meta, title = "", body } = _get(nws, "node", {});
 
-    const uid = _get(_meta, "uid", "");
-    const firstPubDate = _get(_meta, "firstPublicationDate", "");
+      const uid = _get(_meta, "uid", "");
+      const firstPubDate = _get(_meta, "firstPublicationDate", "");
 
-    if (!formattedNewsletters[uid]) {
-      formattedNewsletters[uid] = {
-        title,
-        slug: uid,
-        firstPubDate,
-        body,
-        issueNumber: index + 1,
-      };
-    }
-  });
-
-  // TODO: make sure this is sorting correctly
-  // TODO: remove the latest newsletter (as it's being displayed)
-  archives = Object.values(formattedNewsletters)
-    .map((nws) => {
-      const firstArticleTitle = _get(nws, "body[0].primary.heading", nws.title);
-      return {
-        title: firstArticleTitle,
-        slug: nws.slug,
-        firstPubDate: nws.firstPubDate,
-      };
-    })
-    .sort((a, b) => {
-      const aDate = new Date(a.firstPubDate);
-      const bDate = new Date(b.firstPubDate);
-
-      if (aDate > bDate) return -1;
-      if (aDate < bDate) return 1;
-      else return 0;
+      if (!formattedNewsletters[uid]) {
+        formattedNewsletters[uid] = {
+          title,
+          slug: uid,
+          firstPubDate,
+          body,
+          issueNumber: index + 1,
+        };
+      }
     });
+
+    // TODO: make sure this is sorting correctly
+    // TODO: remove the latest newsletter (as it's being displayed)
+    archives = Object.values(formattedNewsletters)
+      .map((nws) => {
+        const firstArticleTitle = _get(
+          nws,
+          "body[0].primary.heading",
+          nws.title
+        );
+        return {
+          title: firstArticleTitle,
+          slug: nws.slug,
+          firstPubDate: nws.firstPubDate,
+        };
+      })
+      .sort((a, b) => {
+        const aDate = new Date(a.firstPubDate);
+        const bDate = new Date(b.firstPubDate);
+
+        if (aDate > bDate) return -1;
+        if (aDate < bDate) return 1;
+        else return 0;
+      });
+    socials = await socialsGenerator(_get(homePage, "socials", []));
+    unsubscribe = await fileGen.loadSlice("unsubscribe");
+    // GEN META
+    meta = fileGen.replaceAllKeys(
+      {
+        title: homePage.title,
+        "share-image-url": _get(homePage, "meta_share_image.url", ""),
+        "short-description": _get(homePage, "meta_short_description", ""),
+        "site-url": _get(homePage, "meta_site_url", ""),
+      },
+      metaTemplate
+    );
+  }
 
   // GET THE LATEST NEWSLETTER TO SHOW AS CONTENT
   const latestNewsletterData = formattedNewsletters[archives[issueNumber].slug];
   const newsletter = await newsletterGenerator(latestNewsletterData);
 
   // GEN SECTIONS
-  socials = await socialsGenerator(_get(homePage, "socials", []));
   const archive = await archiveGenerator(
     archives[issueNumber + 1] ?? null,
     archives[issueNumber - 1] ?? null
-  );
-  unsubscribe = await fileGen.loadSlice("unsubscribe");
-
-  // GEN META
-  meta = fileGen.replaceAllKeys(
-    {
-      title: homePage.title,
-      "share-image-url": _get(homePage, "meta_share_image.url", ""),
-      "short-description": _get(homePage, "meta_short_description", ""),
-      "site-url": _get(homePage, "meta_site_url", ""),
-    },
-    metaTemplate
   );
 
   // Get and format the issue based on the last newsletter
   const issueDate = _get(latestNewsletterData, "firstPubDate", "");
   const dateString = convertToNice(issueDate);
 
-  const index = fileGen.replaceAllKeys(
+  let index = fileGen.replaceAllKeys(
     {
       // sections
       newsletter,
@@ -166,15 +172,27 @@ const compileIndex = async (
     indexTemplate
   );
 
-  await fileGen.writeFile(output, index);
+  if (isSubPage) {
+    index = index.replace(
+      '<link rel="stylesheet" href="styles.css" />',
+      '<link rel="stylesheet" href="../styles.css" />'
+    );
+  }
+
+  await fileGen.writePage(output, index);
 };
 
 const compilePages = async () => {
-  // get list of all newsletters
-  // create subpages
-  // /slug/index.html
-  // use first image as meta image
-  // use first heading as short-description
+  for (let i = 0; i < archives.length; i += 1) {
+    const slug = archives[i].slug;
+    await compileIndex(
+      "web",
+      i,
+      path.resolve(fileGen.buildPath, slug),
+      false,
+      true
+    );
+  }
 };
 
 const compileSite = async () => {
@@ -188,7 +206,7 @@ const compileSite = async () => {
     console.log("Done");
 
     console.log("Compiling Index...");
-    await compileIndex(mode);
+    await compileIndex(mode, 0, fileGen.buildPath);
     console.log("Done");
 
     if (mode === "web") {

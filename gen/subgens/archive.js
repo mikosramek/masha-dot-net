@@ -11,7 +11,7 @@ const genArchive = async (previous, next) => {
 
   const links = [];
   if (previous) {
-    const label = convertToNice(_get(previous, "firstPubDate", ""));
+    const label = `← ${convertToNice(_get(previous, "firstPubDate", ""))}`;
     const slug = _get(previous, "slug", "");
     links.push(
       fileGen.replaceAllKeys(
@@ -26,8 +26,8 @@ const genArchive = async (previous, next) => {
     links.push(placeholder);
   }
   if (next) {
-    const label = convertToNice(_get(next, "firstPubDate", ""));
-    const slug = _get(previous, "slug", "");
+    const label = `${convertToNice(_get(next, "firstPubDate", ""))} →`;
+    const slug = _get(next, "slug", "");
     links.push(
       fileGen.replaceAllKeys(
         {

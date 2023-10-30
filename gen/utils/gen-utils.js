@@ -42,6 +42,18 @@ class Gen {
       });
     });
   }
+  writePage(outputFolder, data) {
+    return new Promise((res, rej) => {
+      if (!fs.existsSync(outputFolder)) {
+        fs.mkdirSync(outputFolder);
+      }
+      const filePath = path.resolve(outputFolder, `index.html`);
+      fs.writeFile(filePath, data, (err) => {
+        if (err) return rej(err);
+        res();
+      });
+    });
+  }
   cleanBuild() {
     return new Promise((res, rej) => {
       fs.emptyDir(this.buildPath, (err) => {
