@@ -1,10 +1,11 @@
 // send out newsletter
 export const handler = async () => {
   try {
-    // const body = await attemptMail();
+    const html = require("../../build/newsletter/raw/index.html");
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "correct" }),
+      body: JSON.stringify({ html }),
     };
   } catch (error) {
     return {

@@ -45,7 +45,7 @@ class Gen {
   writePage(outputFolder, data) {
     return new Promise((res, rej) => {
       if (!fs.existsSync(outputFolder)) {
-        fs.mkdirSync(outputFolder);
+        fs.mkdirSync(outputFolder, { recursive: true });
       }
       const filePath = path.resolve(outputFolder, `index.html`);
       fs.writeFile(filePath, data, (err) => {
