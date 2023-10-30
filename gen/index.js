@@ -7,12 +7,12 @@ const IS_DEV = process.env.IS_DEV;
 
 const { basePages, entries, firstEntries } = require("./queries");
 
-const generateNewsletter = require("./utils/generateNewsletter");
-
 const socialsGenerator = require("./subgens/socials");
 const archiveGenerator = require("./subgens/archive");
 const newsletterGenerator = require("./subgens/newsletter");
 
+const { convertToNice } = require("./utils/dates");
+const generateNewsletter = require("./utils/generateNewsletter");
 const compileSass = require("./utils/compileScss");
 
 const prismicName = process.env.PRISMIC_NAME ?? "";
@@ -22,21 +22,44 @@ const fileGen = require("./utils/gen-utils");
 
 const formattedNewsletters = {};
 
-const compileIndex = async (mode) => {
-  const indexTemplate = await fileGen.loadPage("index");
-  const metaTemplate = await fileGen.loadSlice("meta");
+let indexTemplate;
+let metaTemplate;
 
-  const client = new MNPG(prismicName, secret);
-  const schema = await fileGen.loadSchema();
+let client;
+let schema;
+
+let data;
+let homePage;
+
+let bgTextureURL;
+
+let newsletters;
+
+let archives;
+let socials;
+let unsubscribe;
+let meta;
+
+const compileIndex = async (
+  mode,
+  issueNumber = 0,
+  output = "index",
+  fetch = true
+) => {
+  indexTemplate = await fileGen.loadPage("index");
+  metaTemplate = await fileGen.loadSlice("meta");
+
+  client = new MNPG(prismicName, secret);
+  schema = await fileGen.loadSchema();
 
   client.createClient(schema);
 
-  const data = await client.getBasePages(basePages);
-  const homePage = _get(data, "allHomes.edges[0].node", {});
+  data = await client.getBasePages(basePages);
+  homePage = _get(data, "allHomes.edges[0].node", {});
 
-  const bgTextureURL = _get(homePage, "background_texture.url", "");
+  bgTextureURL = _get(homePage, "background_texture.url", "");
 
-  const newsletters = await client.getEntries(
+  newsletters = await client.getEntries(
     firstEntries,
     entries,
     "allNewsletters"
@@ -61,7 +84,7 @@ const compileIndex = async (mode) => {
 
   // TODO: make sure this is sorting correctly
   // TODO: remove the latest newsletter (as it's being displayed)
-  const archives = Object.values(formattedNewsletters)
+  archives = Object.values(formattedNewsletters)
     .map((nws) => {
       const firstArticleTitle = _get(nws, "body[0].primary.heading", nws.title);
       return {
@@ -74,24 +97,25 @@ const compileIndex = async (mode) => {
       const aDate = new Date(a.firstPubDate);
       const bDate = new Date(b.firstPubDate);
 
-      if (aDate > bDate) return 1;
-      if (aDate < bDate) return -1;
+      if (aDate > bDate) return -1;
+      if (aDate < bDate) return 1;
       else return 0;
     });
 
   // GET THE LATEST NEWSLETTER TO SHOW AS CONTENT
-  const latestNewsletterData = formattedNewsletters[archives[0].slug];
-  const newsletter = await newsletterGenerator(
-    formattedNewsletters[archives[0].slug]
-  );
+  const latestNewsletterData = formattedNewsletters[archives[issueNumber].slug];
+  const newsletter = await newsletterGenerator(latestNewsletterData);
 
   // GEN SECTIONS
-  const socials = await socialsGenerator(_get(homePage, "socials", []));
-  const archive = await archiveGenerator(archives);
-  const unsubscribe = await fileGen.loadSlice("unsubscribe");
+  socials = await socialsGenerator(_get(homePage, "socials", []));
+  const archive = await archiveGenerator(
+    archives[issueNumber + 1] ?? null,
+    archives[issueNumber - 1] ?? null
+  );
+  unsubscribe = await fileGen.loadSlice("unsubscribe");
 
   // GEN META
-  const meta = fileGen.replaceAllKeys(
+  meta = fileGen.replaceAllKeys(
     {
       title: homePage.title,
       "share-image-url": _get(homePage, "meta_share_image.url", ""),
@@ -102,10 +126,8 @@ const compileIndex = async (mode) => {
   );
 
   // Get and format the issue based on the last newsletter
-  const issueDate = new Date(_get(latestNewsletterData, "firstPubDate", ""));
-  const dateString = `${issueDate.getFullYear()}.${
-    issueDate.getMonth() + 1
-  }.${issueDate.getDate()}`;
+  const issueDate = _get(latestNewsletterData, "firstPubDate", "");
+  const dateString = convertToNice(issueDate);
 
   const index = fileGen.replaceAllKeys(
     {
@@ -144,7 +166,7 @@ const compileIndex = async (mode) => {
     indexTemplate
   );
 
-  await fileGen.writeFile("index", index);
+  await fileGen.writeFile(output, index);
 };
 
 const compilePages = async () => {

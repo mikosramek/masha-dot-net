@@ -239,6 +239,16 @@ a:visited {
 .Unsubscribe__link {
   color: #fff; }
 
+.Archive__list {
+  width: 100%; }
+
+.Archive__data {
+  width: 50%;
+  font-size: 1.6rem;
+  font-family: "Enriqueta", sans-serif; }
+  .Archive__data:nth-of-type(2n) {
+    text-align: right; }
+
 .Newsletter {
   padding: 26px 20px;
   border: 1px solid #111; }

@@ -1,26 +1,51 @@
 const _get = require("lodash.get");
 const fileGen = require("../utils/gen-utils");
+const { convertToNice } = require("../utils/dates");
 
-const genArchive = async (archiveData) => {
-  const wrapperTemplate = await fileGen.loadSlice("archive-wrapper");
-  const archiveTemplate = await fileGen.loadSlice("archive");
+const genArchive = async (previous, next) => {
+  console.log(previous, next);
 
-  let archiveLinks = [];
+  const archiveWrapper = await fileGen.loadSlice("archive-wrapper");
+  const archiveLink = await fileGen.loadSlice("archive-link");
+  const placeholder = await fileGen.loadSlice("archive-placeholder");
 
-  archiveData.forEach((archive) => {
-    const replacements = {
-      // TODO: IS_DEV for proper link in dev exp?
-      slug: `./${_get(archive, "slug", "")}`,
-      label: _get(archive, "title", ""),
-    };
-    archiveLinks.push(fileGen.replaceAllKeys(replacements, archiveTemplate));
-  });
+  const links = [];
+  if (previous) {
+    const label = convertToNice(_get(previous, "firstPubDate", ""));
+    const slug = _get(previous, "slug", "");
+    links.push(
+      fileGen.replaceAllKeys(
+        {
+          label,
+          slug,
+        },
+        archiveLink
+      )
+    );
+  } else {
+    links.push(placeholder);
+  }
+  if (next) {
+    const label = convertToNice(_get(next, "firstPubDate", ""));
+    const slug = _get(previous, "slug", "");
+    links.push(
+      fileGen.replaceAllKeys(
+        {
+          label,
+          slug,
+        },
+        archiveLink
+      )
+    );
+  } else {
+    links.push(placeholder);
+  }
 
   return fileGen.replaceAllKeys(
     {
-      archives: archiveLinks.join("\n"),
+      links: links.join("\n"),
     },
-    wrapperTemplate
+    archiveWrapper
   );
 };
 
