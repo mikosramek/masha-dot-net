@@ -104,8 +104,6 @@ const generateNewsletter = async (
     dom.window.document.querySelector("head").append(headerStyleTag);
 
     writeFile(outputFilePath, dom.serialize());
-
-    // console.log(modifiedCSS);
   } catch (error) {
     console.error(error);
   }
