@@ -1,10 +1,11 @@
 import fetch from "node-fetch";
 
 // send out newsletter
-export const handler = async () => {
+export const handler = async (event, context) => {
   try {
-    // const html = require("../../../build/newsletter/raw/index.html");
+    console.log(event, context);
 
+    const secret = process.env.WEBHOOK_FOR_EMAIL;
     const url = process.env.SITE_URL ?? "http://localhost:8888";
 
     const response = await fetch(`${url}/newsletter/`);
