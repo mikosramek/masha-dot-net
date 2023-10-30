@@ -1,8 +1,9 @@
-@import "./_fonts.scss";
+@import "./_variables.scss";
 
 @mixin heading {
   font-size: 3.2rem;
   font-family: $EDCerfoglioRegular;
+  font-weight: 400;
 }
 
 @mixin subheading {

@@ -7,13 +7,19 @@ const genSocials = async (socialData) => {
 
   let socials = [];
 
-  socialData.forEach((social) => {
+  socialData.forEach((social, index) => {
     const replacements = {
       link: _get(social, "link.url", ""),
       icon: _get(social, "icon.url", ""),
       label: _get(social, "icon.alt", ""),
     };
-    socials.push(fileGen.replaceAllKeys(replacements, socialTemplate));
+
+    let socialHTML = fileGen.replaceAllKeys(replacements, socialTemplate);
+    index % 2 === 0
+      ? (socialHTML = `<tr>${socialHTML}`)
+      : (socialHTML = `${socialHTML}</tr>`);
+
+    socials.push(socialHTML);
   });
 
   return fileGen.replaceAllKeys(

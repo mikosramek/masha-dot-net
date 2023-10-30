@@ -4,21 +4,21 @@
   padding-top: 16px;
   &__title {
     text-align: center;
-    font-size: 24px;
-    @include visuallyhidden;
   }
   &__graphic {
     width: 100%;
   }
-  &__info {
-    display: flex;
-    justify-content: space-between;
+  &__info-table {
+    width: 100%;
     position: relative;
     bottom: 12px;
   }
   &__issue,
   &__date {
     @include label;
+  }
+  &__issue {
+    text-align: right;
   }
 }
 
@@ -38,23 +38,15 @@
   transform: translate(-50%, -50%);
   width: max-content;
   padding: 8px 24px;
+  background-size: cover;
+  background-position: center bottom;
+  background-color: #000;
   &__heading {
     color: #fff;
     z-index: 2;
     text-align: center;
     display: block;
     width: auto;
-  }
-  &__texture {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    object-fit: cover;
   }
 }
 
@@ -67,22 +59,11 @@
     background-size: cover;
     background-position: 50% 50%;
   }
-  &__background {
-    width: 200%;
-    height: 200%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    object-fit: cover;
-    transform: translate(-25%, -25%);
-  }
   &__item {
+    padding: 32px 40px;
     position: relative;
     z-index: 2;
     color: #fff;
-    padding: 32px 40px;
     &:nth-of-type(2n) {
       text-align: right;
       .Socials__image {
@@ -102,5 +83,9 @@
   &__label {
     position: relative;
     bottom: 4px;
+  }
+  &__strong {
+    color: #fff;
+    font-weight: 400;
   }
 }

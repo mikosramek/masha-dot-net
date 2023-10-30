@@ -1,11 +1,13 @@
 require("dotenv").config();
-
+const path = require("path");
 const _get = require("lodash.get");
 const { MNPG } = require("@mikosramek/mnpg");
 
 const IS_DEV = process.env.IS_DEV;
 
 const { basePages, entries, firstEntries } = require("./queries");
+
+const inlineCSS = require("./utils/inlineCSS");
 
 const socialsGenerator = require("./subgens/socials");
 const archiveGenerator = require("./subgens/archive");
@@ -40,7 +42,7 @@ const compileIndex = async () => {
     "allNewsletters"
   );
 
-  newsletters.forEach((nws) => {
+  newsletters.forEach((nws, index) => {
     const { _meta, title = "", body } = _get(nws, "node", {});
 
     const uid = _get(_meta, "uid", "");
@@ -52,6 +54,7 @@ const compileIndex = async () => {
         slug: uid,
         firstPubDate,
         body,
+        issueNumber: index + 1,
       };
     }
   });
@@ -113,7 +116,7 @@ const compileIndex = async () => {
       socials,
       archive,
       "publish-date": dateString,
-      "issue-number": `#${newsletters.length}`,
+      "issue-number": `#${latestNewsletterData.issueNumber}`,
       newsletter: latestNewsletterHTML,
       bgTextureURL,
     },
@@ -151,6 +154,13 @@ const compileSite = async () => {
     console.log("Copying over /static/");
     fileGen.copyOverStatic();
     console.log("Done");
+
+    // TODO: inline css values :)
+    await inlineCSS(
+      path.resolve(fileGen.buildPath, "index.html"),
+      path.resolve(fileGen.buildPath, "styles.css"),
+      path.resolve(fileGen.buildPath, "newsletter.html")
+    );
   } catch (error) {
     console.error(error);
   }
