@@ -5,5 +5,4 @@
 	publish = "build"
 
 [functions]
-        node_bundler = "esbuild"
-				included_files = ["build/newsletter/raw/**"]
+  node_bundler = "esbuild"

@@ -1,8 +1,9 @@
 const generate = require("./generate");
+const newsletter = require("./newsletter");
 
-const run = () => {
-  const [_, __, mode = "web"] = process.argv;
-  generate(mode);
+const run = async () => {
+  await generate();
+  await newsletter();
 };
 
 run();

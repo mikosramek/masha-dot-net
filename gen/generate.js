@@ -12,7 +12,6 @@ const archiveGenerator = require("./subgens/archive");
 const newsletterGenerator = require("./subgens/newsletter");
 
 const { convertToNice } = require("./utils/dates");
-const generateNewsletter = require("./utils/generateNewsletter");
 const compileSass = require("./utils/compileScss");
 
 const prismicName = process.env.PRISMIC_NAME ?? "";
@@ -193,9 +192,7 @@ const compilePages = async () => {
   }
 };
 
-const compileSite = async (mode) => {
-  console.log(`*** Building in ${mode} mode`);
-
+const compileSite = async () => {
   try {
     console.log("Cleaning Build...");
     await fileGen.cleanBuild();
@@ -205,11 +202,9 @@ const compileSite = async (mode) => {
     await compileIndex(0, fileGen.buildPath);
     console.log("Done");
 
-    if (mode === "web") {
-      console.log("Compiling Pages...");
-      await compilePages();
-      console.log("Done");
-    }
+    console.log("Compiling Pages...");
+    await compilePages();
+    console.log("Done");
 
     console.log("Compiling sass...");
     await compileSass();
@@ -217,14 +212,6 @@ const compileSite = async (mode) => {
 
     console.log("Copying over /static/");
     fileGen.copyOverStatic();
-    console.log("Done");
-
-    console.log("Compiling newsletter...");
-    await generateNewsletter(
-      path.resolve(fileGen.buildPath, "newsletter", "raw", "index.html"),
-      path.resolve(fileGen.buildPath, "styles.css"),
-      path.resolve(fileGen.buildPath, "newsletter", "index.html")
-    );
     console.log("Done");
   } catch (error) {
     console.error(error);
