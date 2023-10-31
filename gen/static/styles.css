@@ -190,7 +190,8 @@ a:visited {
   padding: 8px 24px;
   background-size: cover;
   background-position: center bottom;
-  background-color: #000; }
+  background-color: #000;
+  margin-bottom: 15px; }
   .DarkHeading__heading {
     color: #fff;
     z-index: 2;
@@ -200,7 +201,8 @@ a:visited {
 
 .Socials {
   background: #000;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  width: 100%; }
   .Socials__table {
     position: relative;
     border-collapse: collapse;
@@ -215,13 +217,14 @@ a:visited {
     .Socials__item:nth-of-type(2n) {
       text-align: right; }
       .Socials__item:nth-of-type(2n) .Socials__image {
-        width: 20px; }
+        width: 20px;
+        height: 20px; }
   .Socials__link {
     font-size: 1.6rem;
     font-family: "Enriqueta", sans-serif; }
   .Socials__image {
     width: 16px;
-    height: auto;
+    height: 16px;
     display: inline;
     margin-right: 8px; }
   .Socials__label {
@@ -250,24 +253,31 @@ a:visited {
     text-align: right; }
 
 .Newsletter {
-  padding: 26px 20px;
-  border: 1px solid #111; }
+  border: 1px solid #111;
+  width: 100%;
+  margin-top: 65px; }
   .Newsletter__heading {
     font-size: 3.2rem;
     font-family: "EDCerfoglioRegular", serif;
     font-weight: 400; }
+  .Newsletter__inner {
+    padding: 26px 20px; }
   .Newsletter__entry {
     padding-top: 16px;
     padding-bottom: 24px;
     border-bottom: 1px solid #111;
     margin-top: 3px;
-    border-top: 0.5px solid #111; }
+    border-top: 0.5px solid #111;
+    width: 100%; }
     .Newsletter__entry:last-of-type {
       padding-bottom: 7px;
       border-bottom: none; }
     .Newsletter__entry:first-of-type {
       border-top: none;
       margin-top: 0; }
+  .Newsletter__entry-inner {
+    padding-bottom: 24px;
+    padding-top: 16px; }
   .Newsletter__entry-title {
     font-size: 2rem;
     font-weight: bold;

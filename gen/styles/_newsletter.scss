@@ -1,11 +1,14 @@
 @import "./_mixins.scss";
 
 .Newsletter {
-  padding: 26px 20px;
   border: 1px solid #111;
-
+  width: 100%;
+  margin-top: 65px;
   &__heading {
     @include heading;
+  }
+  &__inner {
+    padding: 26px 20px;
   }
   &__entry {
     padding-top: 16px;
@@ -13,6 +16,7 @@
     border-bottom: 1px solid #111;
     margin-top: 3px;
     border-top: 0.5px solid #111;
+    width: 100%;
     &:last-of-type {
       padding-bottom: 7px;
       border-bottom: none;
@@ -21,6 +25,10 @@
       border-top: none;
       margin-top: 0;
     }
+  }
+  &__entry-inner {
+    padding-bottom: 24px;
+    padding-top: 16px;
   }
   &__entry-title {
     @include subheading;

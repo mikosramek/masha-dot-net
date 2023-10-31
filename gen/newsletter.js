@@ -3,10 +3,14 @@ const path = require("path");
 const generateNewsletter = require("./utils/generateNewsletter");
 const fileGen = require("./utils/gen-utils");
 
-const newsletter = async () => {
+const sendMail = require("./utils/mail");
+
+const sendNewsletter = process.env.SEND_NEWSLETTER === "true";
+
+const newsletter = async (issueTitle) => {
   try {
     console.log("Compiling newsletter...");
-    await generateNewsletter(
+    const HTML = await generateNewsletter(
       path.resolve(fileGen.buildPath, "newsletter", "raw", "index.html"),
       path.resolve(fileGen.buildPath, "styles.css"),
       path.resolve(fileGen.buildPath, "newsletter", "index.html")
@@ -17,9 +21,13 @@ const newsletter = async () => {
     await fs.remove(path.resolve(fileGen.buildPath, "newsletter", "raw"));
     console.log("Done");
 
-    console.log("Sending off newsletter...");
-
-    console.log("Done");
+    if (sendNewsletter) {
+      console.log("Sending newsletter...");
+      await sendMail(HTML, issueTitle);
+      console.log("Done");
+    } else {
+      console.log("Skipping sending newsletter");
+    }
   } catch (error) {
     console.error(error);
   }

@@ -1,4 +1,3 @@
-require("dotenv").config();
 const path = require("path");
 const _get = require("lodash.get");
 const { MNPG } = require("@mikosramek/mnpg");
@@ -183,6 +182,8 @@ const compileIndex = async (
 
   await fileGen.writePage(output, index);
   await fileGen.writePage(`${output}/newsletter/raw/`, newsletterHTML);
+
+  return latestNewsletterData.title ?? dateString;
 };
 
 const compilePages = async () => {
@@ -199,7 +200,7 @@ const compileSite = async () => {
     console.log("Done");
 
     console.log("Compiling Index...");
-    await compileIndex(0, fileGen.buildPath);
+    const issueTitle = await compileIndex(0, fileGen.buildPath);
     console.log("Done");
 
     console.log("Compiling Pages...");
@@ -213,6 +214,8 @@ const compileSite = async () => {
     console.log("Copying over /static/");
     fileGen.copyOverStatic();
     console.log("Done");
+
+    return issueTitle;
   } catch (error) {
     console.error(error);
   }

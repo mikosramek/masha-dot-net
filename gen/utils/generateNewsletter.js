@@ -79,7 +79,10 @@ const generateNewsletter = async (
       // remove duplicate attributes
       const attributeMap = {};
       attributes.forEach((a) => {
-        const [attr, value] = a.split(": ");
+        let [attr, value] = a.split(": ");
+        if (/rem/.test(value)) {
+          value = `${parseFloat(value) / 1.6}rem`;
+        }
         // replacing existing values means that the cascade is maintained
         attributeMap[attr] = value;
       });
@@ -88,9 +91,10 @@ const generateNewsletter = async (
         .join(" ")}`;
       domElements.forEach((node) => {
         node.style.cssText += css;
-        if (node.nodeName === "HTML") {
-          node.style.fontSize = attributeMap["font-size"];
-        }
+        // HTML tag will get ignored and font-size won't be applied anyways
+        // if (node.nodeName === "HTML") {
+        //   node.style.fontSize = attributeMap["font-size"];
+        // }
       });
     });
 
@@ -103,7 +107,10 @@ const generateNewsletter = async (
     headerStyleTag.innerHTML = headerStyles;
     dom.window.document.querySelector("head").append(headerStyleTag);
 
-    writeFile(outputFilePath, dom.serialize());
+    const emailHTML = dom.serialize();
+
+    await writeFile(outputFilePath, emailHTML);
+    return emailHTML;
   } catch (error) {
     console.error(error);
   }

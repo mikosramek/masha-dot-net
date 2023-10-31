@@ -42,6 +42,7 @@
   background-size: cover;
   background-position: center bottom;
   background-color: #000;
+  margin-bottom: 15px;
   &__heading {
     color: #fff;
     z-index: 2;
@@ -54,6 +55,7 @@
 .Socials {
   background: #000;
   margin-bottom: 0;
+  width: 100%;
   &__table {
     position: relative;
     border-collapse: collapse;
@@ -70,6 +72,7 @@
       text-align: right;
       .Socials__image {
         width: 20px;
+        height: 20px;
       }
     }
   }
@@ -78,7 +81,7 @@
   }
   &__image {
     width: 16px;
-    height: auto;
+    height: 16px;
     display: inline;
     margin-right: 8px;
   }

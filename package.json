@@ -24,7 +24,8 @@
     "fs-extra": "^11.1.1",
     "jsdom": "^22.1.0",
     "lodash.get": "^4.4.2",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "node-mailjet": "^6.0.4"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
