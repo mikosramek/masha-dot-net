@@ -36,7 +36,7 @@ const generateNewsletter = async (
       .replaceAll("}", "}\n")
       .replaceAll(/@import url.+"\);/g, (match) => `${match}\n`);
 
-    const rules = modifiedCSS.split("\n");
+    const rules = modifiedCSS.split("\n").map((l) => l.trim());
 
     const rulesForTop = [];
     const ruleMap = {};
@@ -63,7 +63,10 @@ const generateNewsletter = async (
           });
         }
       } else {
-        rulesForTop.push(rawLine);
+        if (rawLine === "}") {
+        } else {
+          rulesForTop.push(rawLine);
+        }
       }
     });
 

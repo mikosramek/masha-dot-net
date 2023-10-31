@@ -181,12 +181,7 @@ const compileIndex = async (
   });
 
   let index = fileGen.replaceAllKeys(getReplacements("web"), indexTemplate);
-
-  const newsletterHTML = fileGen.replaceAllKeys(
-    getReplacements("newsletter"),
-    indexTemplate
-  );
-
+  await fileGen.writePage(output, index);
   if (isSubPage) {
     index = index.replace(
       '<link rel="stylesheet" href="styles.css" />',
@@ -194,8 +189,14 @@ const compileIndex = async (
     );
   }
 
-  await fileGen.writePage(output, index);
-  await fileGen.writePage(`${output}/newsletter/raw/`, newsletterHTML);
+  if (!isSubPage) {
+    const newsletterHTML = fileGen.replaceAllKeys(
+      getReplacements("newsletter"),
+      indexTemplate
+    );
+
+    await fileGen.writePage(`${output}/newsletter/raw/`, newsletterHTML);
+  }
 
   return latestNewsletterData.title ?? dateString;
 };

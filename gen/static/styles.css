@@ -140,7 +140,7 @@ body {
 .Global__wrapper {
   max-width: 600px;
   margin: 0 auto;
-  width: 80%; }
+  width: 95%; }
 
 .Global__strong {
   color: inherit;
@@ -214,8 +214,14 @@ a:visited {
     position: relative;
     z-index: 2;
     color: #fff; }
+    @media (max-width: 600px) {
+      .Socials__item {
+        padding: 32px 20px; } }
+    .Socials__item:nth-of-type(3n - 2) {
+      padding-right: 0; }
     .Socials__item:nth-of-type(2n) {
-      text-align: right; }
+      text-align: right;
+      padding-left: 0; }
       .Socials__item:nth-of-type(2n) .Socials__image {
         width: 20px;
         height: 20px; }
