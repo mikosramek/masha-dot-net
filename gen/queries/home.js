@@ -8,6 +8,21 @@ module.exports = `
         meta_site_url
         meta_short_description
         background_texture
+        header_font_otf {
+          ... on _FileLink {
+            url
+          }
+        }
+        header_font_woff {
+          ... on _FileLink {
+            url
+          }
+        }
+        header_font_ttf {
+          ... on _FileLink {
+            url
+          }
+        }
         socials {
           icon
           link {

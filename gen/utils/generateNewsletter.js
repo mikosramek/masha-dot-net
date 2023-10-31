@@ -47,7 +47,7 @@ const generateNewsletter = async (
         const [_, cls, attr] = matches;
 
         if (cls[0] === "@") {
-          rulesForTop.push(_);
+          // rulesForTop.push(_);
         } else {
           const attributes = attr
             .split(";")

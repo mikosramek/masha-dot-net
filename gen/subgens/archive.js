@@ -3,6 +3,9 @@ const fileGen = require("../utils/gen-utils");
 const { convertToNice } = require("../utils/dates");
 
 const genArchive = async (previous, next) => {
+  if (!previous && !next) {
+    return "";
+  }
   const archiveWrapper = await fileGen.loadSlice("archive-wrapper");
   const archiveLink = await fileGen.loadSlice("archive-link");
   const placeholder = await fileGen.loadSlice("archive-placeholder");

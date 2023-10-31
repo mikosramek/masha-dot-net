@@ -162,7 +162,7 @@ a:visited {
   .Header__graphic {
     width: 100%;
     font-size: 3.2rem;
-    font-family: "EDCerfoglioRegular", serif;
+    font-family: "EDCerfoglioRegular", "EDCerfoglioRegularNewsletter", serif;
     font-weight: 400; }
   .Header__info-table {
     width: 100%;
@@ -258,7 +258,7 @@ a:visited {
   margin-top: 65px; }
   .Newsletter__heading {
     font-size: 3.2rem;
-    font-family: "EDCerfoglioRegular", serif;
+    font-family: "EDCerfoglioRegular", "EDCerfoglioRegularNewsletter", serif;
     font-weight: 400; }
   .Newsletter__inner {
     padding: 26px 20px; }

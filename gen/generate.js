@@ -132,6 +132,18 @@ const compileIndex = async (
   const issueDate = _get(latestNewsletterData, "firstPubDate", "");
   const dateString = convertToNice(issueDate);
 
+  const newsletterHostedFontsTemplate = await fileGen.loadSlice(
+    "newsletter-hosted-fonts"
+  );
+  const newsletterHostedFonts = fileGen.replaceAllKeys(
+    {
+      "header-font-otf": _get(homePage, "header_font_otf.url", ""),
+      "header-font-ttf": _get(homePage, "header_font_ttf.url", ""),
+      "header-font-woff": _get(homePage, "header_font_woff.url", ""),
+    },
+    newsletterHostedFontsTemplate
+  );
+
   const getReplacements = (mode) => ({
     // sections
     newsletter,
@@ -143,6 +155,7 @@ const compileIndex = async (
           archive,
           unsubscribe: "",
           header: "TODO",
+          "newsletter-hosted-fonts": "",
         }
       : {}),
     ...(mode === "newsletter"
@@ -150,6 +163,7 @@ const compileIndex = async (
           archive: "",
           unsubscribe,
           header: "",
+          "newsletter-hosted-fonts": newsletterHostedFonts,
         }
       : {}),
     // small piece replacements
