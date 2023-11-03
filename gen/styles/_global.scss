@@ -6,6 +6,10 @@ body {
   font-family: sans-serif;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 .Global {
   &__wrapper {
     max-width: 600px;

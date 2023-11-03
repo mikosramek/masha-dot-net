@@ -137,6 +137,9 @@ html {
 body {
   font-family: sans-serif; }
 
+* {
+  box-sizing: border-box; }
+
 .Global__wrapper {
   max-width: 600px;
   margin: 0 auto;
@@ -381,22 +384,20 @@ a:visited {
 .FanArt {
   width: 100%;
   margin-top: 42px; }
+  .FanArt__submissions {
+    width: 100%; }
   .FanArt__inner {
     padding-top: 48px; }
   .FanArt__art-wrapper {
-    padding: 0;
-    padding-bottom: 14px;
-    width: 50%;
-    padding-left: 6px; }
-    .FanArt__art-wrapper:nth-of-type(3n - 2) {
-      padding-right: 6px;
-      padding-left: 0; }
+    padding: 0 6px 14px;
+    width: 50%; }
   .FanArt__art-image {
-    width: 100%; }
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain; }
   .FanArt__art-link {
     width: 100%;
-    display: block;
-    max-width: 300px; }
+    display: block; }
   .FanArt__art-label {
     font-size: 1.6rem;
     font-family: "Enriqueta", sans-serif;
