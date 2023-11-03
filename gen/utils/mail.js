@@ -5,6 +5,8 @@ const mailjet = new Mailjet({
   apiSecret: process.env.MJ_APIKEY_PRIVATE,
 });
 
+const isDev = process.env.IS_DEV === "true";
+
 const sendMail = async (html, issueTitle) => {
   return new Promise((res, rej) => {
     const request = mailjet.post("send", { version: "v3.1" }).request({
@@ -19,7 +21,7 @@ const sendMail = async (html, issueTitle) => {
               Email: process.env.MJ_MAGIC_EMAIL,
             },
           ],
-          Subject: `Dovecot Press; ${issueTitle}`,
+          Subject: `${isDev ? "PREVIEW: " : ""}Dovecot Press; ${issueTitle}`,
           TextPart: "See the latest update from Dovecot Press!",
           HTMLPart: html,
         },

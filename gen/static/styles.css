@@ -235,7 +235,8 @@ a:visited {
     width: 16px;
     height: 16px;
     display: inline;
-    margin-right: 8px; }
+    margin-right: 8px;
+    min-height: none; }
   .Socials__label {
     position: relative;
     bottom: 4px;
