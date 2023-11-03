@@ -123,3 +123,96 @@
     }
   }
 }
+
+.SignUp {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #000;
+  padding-bottom: 22px;
+  margin-bottom: 16px;
+  margin-top: 0;
+  &__heading {
+    text-transform: uppercase;
+    @include heading;
+    font-size: 4rem;
+    margin-bottom: 0;
+  }
+  &__subheading {
+    @include label;
+  }
+  &__button {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @include label;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 11px 63px 11px 19px;
+    border: none;
+    background-color: #ffa9a4;
+    border-radius: 100px;
+    overflow: hidden;
+    &:hover,
+    &:focus {
+      background-color: lighten(#ffa9a4, 5);
+    }
+    &:active {
+      background-color: darken(#ffa9a4, 1);
+    }
+  }
+  &__bird {
+    width: 56px;
+    height: auto;
+    position: absolute;
+    right: 2px;
+    top: 5px;
+  }
+}
+
+.SignUpForm {
+  visibility: hidden;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &--show {
+    visibility: visible;
+  }
+  &__content {
+    width: calc(600px - 16px);
+    position: relative;
+  }
+  &__scrim {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.58);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    cursor: pointer;
+  }
+  &__iframe {
+    // height: 475px !important;
+  }
+  &__close-button {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    background: none;
+    border: none;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    cursor: pointer;
+  }
+}

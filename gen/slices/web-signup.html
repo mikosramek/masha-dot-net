@@ -1,0 +1,65 @@
+<section class="Section SignUp">
+  <div class="SignUp__copy">
+    <h2 class="SignUp__heading">Dovecotpress</h2>
+    <p class="SignUp__subheading">The silliest newsletter</p>
+  </div>
+  <div class="SignUp__cta">
+    <button class="SignUp__button" id="signup-cta">
+      Sign up
+      <img src="./assets/signup-bird.png" class="SignUp__bird" />
+    </button>
+  </div>
+</section>
+
+<div class="SignUpForm" id="form">
+  <div
+    class="SignUpForm__scrim"
+    aria-label="Close the signup modal"
+    id="modal-scrim"
+  ></div>
+  <div class="SignUpForm__content">
+    <button class="SignUpForm__close-button" id="close-signup">
+      <img src="./assets/close.png" alt="Close the signup modal" />
+    </button>
+    <iframe
+      class="SignUpForm__iframe"
+      data-w-type="embedded"
+      frameborder="0"
+      scrolling="no"
+      marginheight="0"
+      marginwidth="0"
+      src="https://s0jyz.mjt.lu/wgt/s0jyz/8rn/form?c=8b556ff9"
+      width="100%"
+      style="height: 475px"
+    ></iframe>
+
+    <script
+      type="text/javascript"
+      src="https://app.mailjet.com/pas-nc-embedded-v1.js"
+    ></script>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = {};
+    form.OpenModalButton = document.querySelector("#signup-cta");
+    form.CloseModalButton = document.querySelector("#close-signup");
+    form.ModalScrim = document.querySelector("#modal-scrim");
+
+    form.container = document.querySelector("#form");
+    const classToToggle = "SignUpForm--show";
+
+    form.OpenModalButton.addEventListener("click", () => {
+      form.container.classList.add(classToToggle);
+    });
+
+    const close = () => {
+      form.container.classList.remove(classToToggle);
+    };
+
+    form.CloseModalButton.addEventListener("click", close);
+    form.ModalScrim.addEventListener("click", close);
+
+    console.log(form);
+  });
+</script>

@@ -19,6 +19,17 @@ edges {
             image
           }
         }
+        ... on NewsletterBodyFan_art {
+          fields {
+            fan_art
+            label
+            link {
+              ... on _ExternalLink {
+                url
+              }
+            }
+          }
+        }
       }
   }
 }

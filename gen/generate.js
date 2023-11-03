@@ -2,7 +2,10 @@ const path = require("path");
 const _get = require("lodash.get");
 const { MNPG } = require("@mikosramek/mnpg");
 
-const IS_DEV = process.env.IS_DEV;
+const isDev = process.env.IS_DEV === "true";
+const prismicPreviewLink = process.env.PRISMIC_PREVIEW_LINK;
+const insertPrismicPreviewLink =
+  process.env.INSERT_PRISMIC_PREVIEW_LINK === "true";
 
 const { basePages, entries, firstEntries } = require("./queries");
 
@@ -144,6 +147,9 @@ const compileIndex = async (
     newsletterHostedFontsTemplate
   );
 
+  // get web-only signup header
+  const signup = await fileGen.loadSlice("web-signup");
+
   const getReplacements = (mode) => ({
     // sections
     newsletter,
@@ -154,18 +160,25 @@ const compileIndex = async (
       ? {
           archive,
           unsubscribe: "",
-          header: "TODO",
           "newsletter-hosted-fonts": "",
+          signup: signup,
         }
       : {}),
     ...(mode === "newsletter"
       ? {
           archive: "",
           unsubscribe,
-          header: "",
           "newsletter-hosted-fonts": newsletterHostedFonts,
+          signup: "",
         }
       : {}),
+    ...(isDev
+      ? {
+          preview: insertPrismicPreviewLink ? prismicPreviewLink : "",
+        }
+      : {
+          preview: "",
+        }),
     // small piece replacements
     title: homePage.title,
     header_image: _get(
