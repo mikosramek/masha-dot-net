@@ -194,13 +194,16 @@ const compileIndex = async (
   });
 
   let index = fileGen.replaceAllKeys(getReplacements("web"), indexTemplate);
-  await fileGen.writePage(output, index);
   if (isSubPage) {
-    index = index.replace(
-      '<link rel="stylesheet" href="styles.css" />',
-      '<link rel="stylesheet" href="../styles.css" />'
-    );
+    index = index
+      .replace(
+        '<link rel="stylesheet" href="styles.css" />',
+        '<link rel="stylesheet" href="../styles.css" />'
+      )
+      .replaceAll("./assets", "../assets");
   }
+
+  await fileGen.writePage(output, index);
 
   if (!isSubPage) {
     const newsletterHTML = fileGen.replaceAllKeys(
