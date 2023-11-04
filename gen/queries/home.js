@@ -8,6 +8,8 @@ module.exports = `
         meta_site_url
         meta_short_description
         background_texture
+        tag_line
+        top_title
         header_font_otf {
           ... on _FileLink {
             url

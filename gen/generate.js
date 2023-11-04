@@ -162,6 +162,8 @@ const compileIndex = async (
           unsubscribe: "",
           "newsletter-hosted-fonts": "",
           signup: signup,
+          "tag-line": _get(homePage, "tag_line", ""),
+          "top-title": _get(homePage, "top_title", ""),
         }
       : {}),
     ...(mode === "newsletter"

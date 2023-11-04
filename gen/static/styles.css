@@ -270,6 +270,13 @@ a:visited {
   padding-bottom: 22px;
   margin-bottom: 16px;
   margin-top: 0; }
+  @media (max-width: 600px) {
+    .SignUp {
+      flex-direction: column;
+      align-items: flex-start; } }
+  @media (max-width: 600px) {
+    .SignUp__copy {
+      margin-bottom: 12px; } }
   .SignUp__heading {
     text-transform: uppercase;
     font-size: 3.2rem;
