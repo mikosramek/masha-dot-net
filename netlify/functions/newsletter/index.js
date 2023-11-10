@@ -2,8 +2,10 @@ import fetch from "node-fetch";
 
 const sendMail = require("./mail");
 
-export const handler = async (req) => {
+export const handler = async (req, context) => {
   const { mode, passkey } = req.headers;
+
+  const isDEV = process.env.CONTEXT === "dev";
 
   if (mode !== "preview" && mode !== "production") {
     return {
@@ -17,11 +19,6 @@ export const handler = async (req) => {
       body: "passkey missing or incorrect",
     };
   }
-
-  console.log({
-    id: process.env.NETLIFY_SITE_ID,
-    token: process.env.NETLIFY_TOKEN,
-  });
 
   // double check if the newsletter html is there in body
   const data = await fetch(
@@ -50,8 +47,18 @@ export const handler = async (req) => {
     };
   }
 
+  let deployment = "";
+  if (!isDEV) {
+    data = context.clientContext?.custom?.netlify;
+    decoded = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
+
+    deployment = decoded.site_url ?? "";
+  }
+
   // fetch that HTML from the live site
-  const newsletterResponse = await fetch(`/newsletter/index.html`);
+  const newsletterResponse = await fetch(
+    `${isDEV ? process.env.DEPLOY_URL : deployment}/newsletter/index.html`
+  );
   const newsletterHTML = await newsletterResponse.text();
 
   // set target
