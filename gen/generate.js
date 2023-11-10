@@ -120,8 +120,16 @@ const compileIndex = async (
   }
 
   // GET THE LATEST NEWSLETTER TO SHOW AS CONTENT
-  const latestNewsletterData = formattedNewsletters[archives[issueNumber].slug];
-  const newsletter = await newsletterGenerator(latestNewsletterData);
+
+  let newsletter = "";
+  let latestNewsletterData = {
+    firstPubDate: null,
+    issueNumber: "0",
+  };
+  if (archives[issueNumber]) {
+    latestNewsletterData = formattedNewsletters[archives[issueNumber]?.slug];
+    newsletter = await newsletterGenerator(latestNewsletterData);
+  }
 
   // GEN SECTIONS
   const archive = await archiveGenerator(
@@ -131,7 +139,7 @@ const compileIndex = async (
 
   // Get and format the issue based on the last newsletter
   const issueDate = _get(latestNewsletterData, "firstPubDate", "");
-  const dateString = convertToNice(issueDate);
+  const dateString = issueDate ? convertToNice(issueDate) : "coming soon";
 
   const newsletterHostedFontsTemplate = await fileGen.loadSlice(
     "newsletter-hosted-fonts"
