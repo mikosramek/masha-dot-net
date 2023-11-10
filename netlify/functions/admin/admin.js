@@ -99,8 +99,8 @@ export const handler = async (event, context) => {
 
   let deployment = "";
   if (!isDEV) {
-    data = context.clientContext?.custom?.netlify;
-    decoded = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
+    const data = context.clientContext?.custom?.netlify;
+    const decoded = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
 
     deployment = decoded.site_url ?? "";
   }
