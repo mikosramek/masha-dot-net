@@ -49,8 +49,6 @@ const genEntry = (slice) => {
 }
 */
 const genFanArt = (slices) => {
-  // console.log(slices);
-
   const art = slices.map((section) => {
     const artHTML = section.fields.map((slice, index) => {
       const url = _get(slice, "fan_art.url", "");

@@ -84,8 +84,6 @@ const compileIndex = async (
       }
     });
 
-    // TODO: make sure this is sorting correctly
-    // TODO: remove the latest newsletter (as it's being displayed)
     archives = Object.values(formattedNewsletters)
       .map((nws) => {
         const firstArticleTitle = _get(
