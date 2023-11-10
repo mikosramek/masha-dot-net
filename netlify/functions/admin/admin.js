@@ -8,55 +8,67 @@ const html = `
   </head>
   <body>
     <h1>Dovecot Press Admin</h1>
+    <a href="${process.env.DEPLOY_URL}/newsletter/" target="_blank"
+      >Current Newsletter</a
+    >
+
     <h2>Preview Newsletter</h2>
-    <button id="preview">Build + Send Preview</button>
+    <button id="preview">Send Preview Newsletter</button>
     <p id="preview-message"></p>
-    <a href="https://preview--dove-cot-press.netlify.app/" target="_blank">preview site</a> |
-    <a href="https://preview--dove-cot-press.netlify.app/newsletter/" target="_blank">preview newsletter</a>
 
     <h2>Production Newsletter</h2>
-    <button id="production">Build + Send Newsletter</button>
+    <button id="production">Send Production Newsletter</button>
     <p id="main-message"></p>
-    <a href="https://dovecotpress.com/" target="_blank">dovecotpress.com</a>
-    <a href="https://dovecotpress.com/newsletter/" target="_blank">newsletter</a>
+
     <script>
       const setMessage = (id, message) => {
         document.querySelector(id).innerText = message;
         setTimeout(() => {
-          document.querySelector(id).innerText = '';
-        }, 5000)
-      }
+          document.querySelector(id).innerText = "";
+        }, 5000);
+      };
 
+      // PREVIEW
       document.addEventListener("DOMContentLoaded", () => {
         document.querySelector("#preview").addEventListener("click", () => {
-          const send = confirm("Send preview?");
+          const send = confirm("Send preview newsletter?");
           if (!send) {
-            setMessage('#preview-message', "Preview not sent");
+            setMessage("#preview-message", "Preview not sent");
             return;
-          };
-          setMessage('#preview-message', "Sending...");
+          }
+          setMessage("#preview-message", "Sending...");
 
-          fetch("${process.env.PREVIEW_HOOK}", {
+          fetch("${process.env.DEPLOY_URL}/.netlify/functions/newsletter", {
             method: "POST",
+            headers: {
+              passkey: "${process.env.ADMIN_PASSWORD}",
+              mode: "preview",
+            },
           })
             .then((res) => {
-              setMessage("#preview-message", 'Preview sent!');
+              setMessage("#preview-message", "Preview sent!");
             })
             .catch((error) => {
               console.error(error);
-              setMessage("#preview-message", 'An error occured');
+              setMessage("#preview-message", "An error occured");
             });
         });
+
+        // PRODUCTION
         document.querySelector("#production").addEventListener("click", () => {
-          const send = confirm("Send newsletter?");
+          const send = confirm("Send production newsletter?");
           if (!send) {
             setMessage("#main-message", "Newsletter not sent");
             return;
           }
           setMessage("#main-message", "Sending...");
 
-          fetch("${process.env.PRODUCTION_HOOK}", {
+          fetch("${process.env.DEPLOY_URL}/.netlify/functions/newsletter", {
             method: "POST",
+            headers: {
+              passkey: "${process.env.ADMIN_PASSWORD}",
+              mode: "production",
+            },
           })
             .then((res) => {
               setMessage("#main-message", "Newsletter sent!");
@@ -70,10 +82,13 @@ const html = `
     </script>
   </body>
 </html>
+
 `;
 
 export const handler = async (event, context) => {
   const pass = process.env.ADMIN_PASSWORD;
+
+  // const newsletterURL = `${process.env.DEPLOY_URL}/.netlify/functions/newsletter`;
 
   // https://www.fabiofranchino.com/log/get-the-path-parameter-from-a-netlify-function/
   const providedPass = event.path
