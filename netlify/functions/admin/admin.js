@@ -8,7 +8,7 @@ const html = `
   </head>
   <body>
     <h1>Dovecot Press Admin</h1>
-    <a href="${process.env.DEPLOY_URL}/newsletter/" target="_blank"
+    <a href="%URL%/newsletter/" target="_blank"
       >Current Newsletter</a
     >
 
@@ -38,7 +38,7 @@ const html = `
           }
           setMessage("#preview-message", "Sending...");
 
-          fetch("${process.env.DEPLOY_URL}/.netlify/functions/newsletter", {
+          fetch("%URL%/.netlify/functions/newsletter", {
             method: "POST",
             headers: {
               passkey: "${process.env.ADMIN_PASSWORD}",
@@ -63,7 +63,7 @@ const html = `
           }
           setMessage("#main-message", "Sending...");
 
-          fetch("${process.env.DEPLOY_URL}/.netlify/functions/newsletter", {
+          fetch("%URL%/.netlify/functions/newsletter", {
             method: "POST",
             headers: {
               passkey: "${process.env.ADMIN_PASSWORD}",
@@ -88,17 +88,33 @@ const html = `
 export const handler = async (event, context) => {
   const pass = process.env.ADMIN_PASSWORD;
 
-  // const newsletterURL = `${process.env.DEPLOY_URL}/.netlify/functions/newsletter`;
+  // const newsletterURL = `%URL%/.netlify/functions/newsletter`;
 
   // https://www.fabiofranchino.com/log/get-the-path-parameter-from-a-netlify-function/
   const providedPass = event.path
     .replace("/.netlify/functions/admin/admin", "")
     .replace(/\//gim, "");
 
+  console.log(context);
+
+  const isDEV = process.env.CONTEXT === "dev";
+
+  let deployment = "";
+  if (!isDEV) {
+    data = context.clientContext?.custom?.netlify;
+    decoded = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
+
+    console.log(decoded);
+  }
+  const updatedHTML = html.replaceAll(
+    "%URL%",
+    isDEV ? process.env.DEPLOY_URL : deployment
+  );
+
   if (pass === providedPass) {
     return {
       statusCode: 200,
-      body: html,
+      body: updatedHTML,
     };
   } else {
     return {
