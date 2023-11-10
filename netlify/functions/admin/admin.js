@@ -8,7 +8,7 @@ const html = `
   </head>
   <body>
     <h1>Dovecot Press Admin</h1>
-    <a href="%URL%/newsletter/" target="_blank"
+    <a href="/newsletter/" target="_blank"
       >Current Newsletter</a
     >
 
@@ -95,8 +95,6 @@ export const handler = async (event, context) => {
     .replace("/.netlify/functions/admin/admin", "")
     .replace(/\//gim, "");
 
-  console.log(context);
-
   const isDEV = process.env.CONTEXT === "dev";
 
   let deployment = "";
@@ -104,7 +102,7 @@ export const handler = async (event, context) => {
     data = context.clientContext?.custom?.netlify;
     decoded = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
 
-    console.log(decoded);
+    deployment = decoded.site_url ?? "";
   }
   const updatedHTML = html.replaceAll(
     "%URL%",
