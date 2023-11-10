@@ -18,6 +18,11 @@ export const handler = async (req) => {
     };
   }
 
+  console.log({
+    id: process.env.NETLIFY_SITE_ID,
+    token: process.env.NETLIFY_TOKEN,
+  });
+
   // double check if the newsletter html is there in body
   const data = await fetch(
     `https://api.netlify.com/api/v1/sites/${process.env.NETLIFY_SITE_ID}/files`,
