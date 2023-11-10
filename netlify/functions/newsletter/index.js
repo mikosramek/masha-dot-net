@@ -46,9 +46,7 @@ export const handler = async (req) => {
   }
 
   // fetch that HTML from the live site
-  const newsletterResponse = await fetch(
-    `${process.env.DEPLOY_URL}/newsletter/index.html`
-  );
+  const newsletterResponse = await fetch(`/newsletter/index.html`);
   const newsletterHTML = await newsletterResponse.text();
 
   // set target
