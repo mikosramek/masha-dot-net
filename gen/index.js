@@ -3,8 +3,8 @@ const generate = require("./generate");
 const newsletter = require("./newsletter");
 
 const run = async () => {
-  const issueTitle = await generate();
-  await newsletter(issueTitle);
+  await generate();
+  await newsletter();
 };
 
 run();
