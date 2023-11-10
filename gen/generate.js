@@ -202,6 +202,7 @@ const compileIndex = async (
         '<link rel="stylesheet" href="styles.css" />',
         '<link rel="stylesheet" href="../styles.css" />'
       )
+      .replace("/favicon.ico", "../favicon.ico")
       .replaceAll("./assets", "../assets");
   }
 
