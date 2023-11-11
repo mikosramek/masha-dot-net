@@ -41,6 +41,47 @@
     ></script>
   </div>
 </div>
+
+<div class="ConfirmationPopup" id="confirmation">
+  <div
+    class="ConfirmationPopup__scrim"
+    aria-label="Close the signup modal"
+    id="confirmation-modal-scrim"
+  ></div>
+  <div class="ConfirmationPopup__content">
+    <button class="ConfirmationPopup__close-button" id="close-confirmation">
+      <img src="./assets/close.png" alt="Close the confirmation modal" />
+    </button>
+
+    <div class="ConfirmationPopup__left-column">
+      <img
+        src="./assets/masha_confirmation.png"
+        alt="Masha sitting on her ledge, appreciating you"
+        width="316"
+        height="364"
+      />
+    </div>
+    <div class="ConfirmationPopup__right-column">
+      <img
+        class="ConfirmationPopup__heart"
+        src="./assets/heart.png"
+        alt=""
+        height="39"
+        width="34"
+      />
+      <h2 class="ConfirmationPopup__heading">
+        Thank you for confirming your email address! <br />
+      </h2>
+      <p class="ConfirmationPopup__sub-heading">
+        Stay tuned for the silliest pigeon newsletter.
+      </p>
+      <button class="ConfirmationPopup__close" id="close-confirmation-button">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const form = {};
@@ -61,5 +102,26 @@
 
     form.CloseModalButton.addEventListener("click", close);
     form.ModalScrim.addEventListener("click", close);
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const confirmation = document.querySelector("#confirmation");
+
+    if (/confirm/gi.test(window.location.search)) {
+      confirmation.classList.add("ConfirmationPopup--show");
+    }
+
+    const close = () => {
+      confirmation.classList.remove("ConfirmationPopup--show");
+    };
+    document
+      .querySelector("#confirmation-modal-scrim")
+      .addEventListener("click", close);
+    document
+      .querySelector("#close-confirmation")
+      .addEventListener("click", close);
+    document
+      .querySelector("#close-confirmation-button")
+      .addEventListener("click", close);
   });
 </script>
