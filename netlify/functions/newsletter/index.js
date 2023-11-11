@@ -75,9 +75,10 @@ export const handler = async (req, context) => {
     splitHTML.findIndex((a) => a.includes(`id="newsletter-title"`)) + 1;
   const title = splitHTML[titleIndex].trim();
 
-  const subject = `${
-    mode === "preview" ? "PREVIEW: " : ""
-  }Dovecot Press: ${title}`;
+  const subject =
+    mode === "preview"
+      ? `Masha's Preview as of ${new Date().getDate()}`
+      : `Dovecot Press: ${title}`;
 
   // send mail using fetched html
   await sendMail(newsletterHTML, targetEmail, subject);
