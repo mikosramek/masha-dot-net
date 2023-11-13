@@ -64,10 +64,12 @@ export const handler = async (req, context) => {
   const newsletterHTML = await newsletterResponse.text();
 
   // set target
-  const targetEmail =
+  const targetListID =
     mode === "production"
-      ? process.env.MJ_PRODUCTION_EMAIL
-      : process.env.MJ_PREVIEW_EMAIL;
+      ? process.env.SENDGRID_PRODUCTION_LIST_ID
+      : process.env.SENDGRID_PREVIEW_LIST_ID;
+
+  console.log({ targetListID });
 
   // get title + set subject
   const splitHTML = newsletterHTML.split("\n");
@@ -77,14 +79,20 @@ export const handler = async (req, context) => {
 
   const subject =
     mode === "preview"
-      ? `Masha's Preview as of ${new Date().getDate()}`
+      ? `Masha's Preview as of ${new Date().toISOString()}`
       : `Dovecot Press: ${title}`;
 
-  // send mail using fetched html
-  await sendMail(newsletterHTML, targetEmail, subject);
-
-  return {
-    statusCode: 200,
-    body: "newsletter",
-  };
+  try {
+    // send mail using fetched html
+    await sendMail(newsletterHTML, targetListID, subject);
+    return {
+      statusCode: 200,
+      body: "newsletter sent",
+    };
+  } catch (e) {
+    return {
+      statusCode: 500,
+      body: e.message,
+    };
+  }
 };

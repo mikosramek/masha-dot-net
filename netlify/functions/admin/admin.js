@@ -46,7 +46,12 @@ const html = `
             },
           })
             .then((res) => {
-              setMessage("#preview-message", "Preview sent!");
+              const { status } = res;
+              if (status === 200) {
+                setMessage("#preview-message", "Preview sent!");
+              } else {
+                setMessage("#preview-message", "An error occured");
+              }
             })
             .catch((error) => {
               console.error(error);
@@ -71,7 +76,12 @@ const html = `
             },
           })
             .then((res) => {
-              setMessage("#main-message", "Newsletter sent!");
+              const { status } = res;
+              if (status === 200) {
+                setMessage("#preview-message", "Newsletter sent!");
+              } else {
+                setMessage("#preview-message", "An error occured");
+              }
             })
             .catch((error) => {
               console.error(error);
