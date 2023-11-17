@@ -46,7 +46,7 @@ const sendMail = async (html, targetListID, subject) => {
             res();
           })
           .catch((error) => {
-            console.log(error);
+            console.error(error);
             console.error(error.response.body.errors);
             rej(error);
           });
