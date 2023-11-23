@@ -41,6 +41,8 @@
   }
   &__entry-label {
     @include label;
+    line-height: 1.4;
+    white-space: pre-wrap;
   }
 }
 

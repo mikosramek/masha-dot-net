@@ -479,7 +479,9 @@ a:visited {
     margin-bottom: 8px; }
   .Newsletter__entry-label {
     font-size: 1.6rem;
-    font-family: "Enriqueta", sans-serif; }
+    font-family: "Enriqueta", sans-serif;
+    line-height: 1.4;
+    white-space: pre-wrap; }
 
 .FanArt {
   width: 100%;
