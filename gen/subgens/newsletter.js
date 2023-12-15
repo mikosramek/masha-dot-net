@@ -27,10 +27,10 @@ let fanArtWrapper;
 const genEntry = (slice) => {
   return fileGen.replaceAllKeys(
     {
-      heading: _get(slice, "primary.heading", ""),
-      label: _get(slice, "primary.label", ""),
-      "img-url": _get(slice, "primary.image.url", ""),
-      "img-alt": _get(slice, "primary.image.alt", ""),
+      heading: _get(slice, "primary.heading", "") ?? "",
+      label: _get(slice, "primary.label", "") ?? "",
+      "img-url": _get(slice, "primary.image.url", "") ?? "",
+      "img-alt": _get(slice, "primary.image.alt", "") ?? "",
     },
     entryTemplate
   );
@@ -53,7 +53,7 @@ const genFanArt = (slices) => {
     const artHTML = section.fields.map((slice, index) => {
       const url = _get(slice, "fan_art.url", "");
       const alt = _get(slice, "fan_art.alt", "");
-      const label = _get(slice, "label", "");
+      const label = _get(slice, "label", "") ?? "";
       const link = _get(slice, "link.url", "");
       let fanArtHTML = fileGen.replaceAllKeys(
         {

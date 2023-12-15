@@ -10,6 +10,7 @@ edges {
           firstPublicationDate
       }
       title
+      email_preview_text
       body {
         __typename
         ... on NewsletterBodyEntry {
