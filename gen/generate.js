@@ -72,6 +72,7 @@ const compileIndex = async (
 
       const uid = _get(_meta, "uid", "");
       const firstPubDate = _get(_meta, "firstPublicationDate", "");
+      const previewText = _get(nws, "node.email_preview_text", "") ?? "";
 
       if (!formattedNewsletters[uid]) {
         formattedNewsletters[uid] = {
@@ -80,6 +81,7 @@ const compileIndex = async (
           firstPubDate,
           body,
           issueNumber: index + 1,
+          previewText,
         };
       }
     });
@@ -156,6 +158,15 @@ const compileIndex = async (
   // get web-only signup header
   const signup = await fileGen.loadSlice("web-signup");
 
+  // get newsletter-only preview text
+  const emailPreview = await fileGen.loadSlice("newsletter-preview-text");
+  const emailPreviewHTML = fileGen.replaceAllKeys(
+    {
+      "preview-label": _get(latestNewsletterData, "previewText", "") ?? "",
+    },
+    emailPreview
+  );
+
   const getReplacements = (mode) => ({
     // sections
     newsletter,
@@ -167,9 +178,10 @@ const compileIndex = async (
           archive,
           unsubscribe: "",
           "newsletter-hosted-fonts": "",
-          signup: signup,
+          signup,
           "tag-line": _get(homePage, "tag_line", ""),
           "top-title": _get(homePage, "top_title", ""),
+          "newsletter-preview": "",
         }
       : {}),
     ...(mode === "newsletter"
@@ -178,6 +190,7 @@ const compileIndex = async (
           unsubscribe,
           "newsletter-hosted-fonts": newsletterHostedFonts,
           signup: "",
+          "newsletter-preview": emailPreviewHTML,
         }
       : {}),
     ...(isDev
