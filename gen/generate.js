@@ -72,6 +72,7 @@ const compileIndex = async (
 
       const uid = _get(_meta, "uid", "");
       const firstPubDate = _get(_meta, "firstPublicationDate", "");
+      const previewText = _get(nws, "node.email_preview_text", "") ?? "";
 
       if (!formattedNewsletters[uid]) {
         formattedNewsletters[uid] = {
@@ -80,6 +81,7 @@ const compileIndex = async (
           firstPubDate,
           body,
           issueNumber: index + 1,
+          previewText,
         };
       }
     });
@@ -160,7 +162,7 @@ const compileIndex = async (
   const emailPreview = await fileGen.loadSlice("newsletter-preview-text");
   const emailPreviewHTML = fileGen.replaceAllKeys(
     {
-      "preview-label": _get(homePage, "email_preview_text", "") ?? "",
+      "preview-label": _get(latestNewsletterData, "previewText", "") ?? "",
     },
     emailPreview
   );
